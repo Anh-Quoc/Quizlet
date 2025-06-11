@@ -40,4 +40,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+
+    // https://mvnrepository.com/artifact/android.arch.persistence.room/runtime
+    implementation("android.arch.persistence.room:runtime:1.1.1")
+    // https://mvnrepository.com/artifact/android.arch.persistence.room/compiler
+    implementation("android.arch.persistence.room:compiler:1.1.1")
+
+    // https://mvnrepository.com/artifact/com.google.guava/guava
+    implementation("com.google.guava:guava:33.4.0-jre")
 }
