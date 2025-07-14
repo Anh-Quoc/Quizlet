@@ -1,19 +1,296 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:paddingTop="16dp"
+    android:paddingBottom="8dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Search Bar -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:background="@drawable/search_bg"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_search"
+                    app:tint="#8A92A6"/>
+
+                <EditText
+                    android:id="@+id/search_bar"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="Search"
+                    android:textColor="#555"
+                    android:textSize="18sp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:inputType="text"/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_image"
+                    app:tint="#8A92A6"/>
+            </LinearLayout>
+
+            <!-- Folders Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Folders"
+                android:textColor="#222"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvFolders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Achievements Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Achievements"
+                android:textColor="#222"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/achievement_bg"
+                android:orientation="vertical"
+                android:padding="18dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="16dp"
+                android:layout_weight="0.9">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No streaks right now"
+                    android:textColor="#52576B"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"/>
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_streak"
+                    app:tint="#C2C7D6"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="8dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Study now to start a streak!"
+                    android:textColor="#7E8499"
+                    android:textSize="16sp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="6dp"/>
+                <!-- Calendar Row -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="12dp">
+                    <!-- Day letters -->
+                    <TextView android:layout_width="24dp" android:layout_height="24dp" android:text="S" style="@style/CalendarDay"/>
+                    <TextView android:layout_width="24dp" android:layout_height="24dp" android:text="M" style="@style/CalendarDay"/>
+                    <TextView android:layout_width="24dp" android:layout_height="24dp" android:text="T" style="@style/CalendarDay"/>
+                    <TextView android:layout_width="24dp" android:layout_height="24dp" android:text="W" style="@style/CalendarDay"/>
+                    <TextView android:layout_width="24dp" android:layout_height="24dp" android:text="T" style="@style/CalendarDay"/>
+                    <TextView android:layout_width="24dp" android:layout_height="24dp" android:text="F" style="@style/CalendarDay"/>
+                    <TextView android:layout_width="24dp" android:layout_height="24dp" android:text="S" style="@style/CalendarDay"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal">
+                    <!-- Day numbers -->
+                    <LinearLayout
+                        android:layout_width="24dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="18"
+                            style="@style/CalendarNum"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="24dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="19"
+                            style="@style/CalendarNum"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="24dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="20"
+                            style="@style/CalendarNum"/>
+                    </LinearLayout>
+                    <!-- Ngày active có chấm ở dưới -->
+                    <LinearLayout
+                        android:layout_width="24dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="21"
+                            style="@style/CalendarNumActive"/>
+                        <View
+                            android:layout_width="6dp"
+                            android:layout_height="6dp"
+                            android:layout_marginTop="2dp"
+                            android:background="@drawable/active_dot"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="24dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="22"
+                            style="@style/CalendarNum"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="24dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="23"
+                            style="@style/CalendarNum"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="24dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="24"
+                            style="@style/CalendarNum"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Flashcard sets (bottom navigation) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Flashcard sets"
+                android:textColor="#222"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvFlashcards"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Bottom Navigation -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:background="@drawable/bottom_nav_bg"
+        android:gravity="center"
+        android:layout_gravity="bottom">
+        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:orientation="vertical" android:layout_weight="1"
+            android:gravity="center">
+            <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_home" app:tint="#4F6DF9"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Home" android:textColor="#4F6DF9" android:textSize="13sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/btn_create_nav"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center">
+            <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_add" app:tint="#8A92A6"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Create" android:textColor="#8A92A6" android:textSize="13sp"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:orientation="vertical" android:layout_weight="1"
+            android:gravity="center">
+            <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_folder" app:tint="#8A92A6"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Library" android:textColor="#8A92A6" android:textSize="13sp"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:orientation="vertical" android:layout_weight="1"
+            android:gravity="center">
+            <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_qplus" app:tint="#8A92A6"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Free trial" android:textColor="#8A92A6" android:textSize="13sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
