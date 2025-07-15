@@ -67,36 +67,36 @@ public class SampleDataPopulator {
                 fc2.created_at = null;
 
                 Flashcards fc3 = new Flashcards();
-                fc2.set_id = (int) setId1;
-                fc2.front_text = "water";
-                fc2.back_text = "nước";
-                fc2.image_url = null;
-                fc2.audio_url = null;
-                fc2.created_at = null;
-
-                Flashcards fc7 = new Flashcards();
-                fc2.set_id = (int) setId1;
-                fc2.front_text = "chair";
-                fc2.back_text = "ghế";
-                fc2.image_url = null;
-                fc2.audio_url = null;
-                fc2.created_at = null;
-
-                Flashcards fc5 = new Flashcards();
-                fc2.set_id = (int) setId1;
-                fc2.front_text = "necessary";
-                fc2.back_text = "cần thiết";
-                fc2.image_url = null;
-                fc2.audio_url = null;
-                fc2.created_at = null;
-
-                Flashcards fc6 = new Flashcards();
-                fc3.set_id = (int) setId2;
-                fc3.front_text = "1945";
-                fc3.back_text = "Cách mạng tháng 8 thành công";
+                fc3.set_id = (int) setId1;
+                fc3.front_text = "water";
+                fc3.back_text = "nước";
                 fc3.image_url = null;
                 fc3.audio_url = null;
                 fc3.created_at = null;
+
+                Flashcards fc7 = new Flashcards();
+                fc7.set_id = (int) setId1;
+                fc7.front_text = "chair";
+                fc7.back_text = "ghế";
+                fc7.image_url = null;
+                fc7.audio_url = null;
+                fc7.created_at = null;
+
+                Flashcards fc5 = new Flashcards();
+                fc5.set_id = (int) setId1;
+                fc5.front_text = "necessary";
+                fc5.back_text = "cần thiết";
+                fc5.image_url = null;
+                fc5.audio_url = null;
+                fc5.created_at = null;
+
+                Flashcards fc6 = new Flashcards();
+                fc6.set_id = (int) setId2;
+                fc6.front_text = "1945";
+                fc6.back_text = "Cách mạng tháng 8 thành công";
+                fc6.image_url = null;
+                fc6.audio_url = null;
+                fc6.created_at = null;
 
                 Flashcards fc4 = new Flashcards();
                 fc4.set_id = (int) setId2;
@@ -107,20 +107,20 @@ public class SampleDataPopulator {
                 fc4.created_at = null;
 
                 Flashcards fc8 = new Flashcards();
-                fc4.set_id = (int) setId2;
-                fc4.front_text = "1972";
-                fc4.back_text = "Chiến thắng Điện Biên Phủ trên không";
-                fc4.image_url = null;
-                fc4.audio_url = null;
-                fc4.created_at = null;
+                fc8.set_id = (int) setId2;
+                fc8.front_text = "1972";
+                fc8.back_text = "Chiến thắng Điện Biên Phủ trên không";
+                fc8.image_url = null;
+                fc8.audio_url = null;
+                fc8.created_at = null;
 
                 Flashcards fc9 = new Flashcards();
-                fc4.set_id = (int) setId2;
-                fc4.front_text = "1954";
-                fc4.back_text = "Chiến thắng Điện Biên Phủ";
-                fc4.image_url = null;
-                fc4.audio_url = null;
-                fc4.created_at = null;
+                fc9.set_id = (int) setId2;
+                fc9.front_text = "1954";
+                fc9.back_text = "Chiến thắng Điện Biên Phủ";
+                fc9.image_url = null;
+                fc9.audio_url = null;
+                fc9.created_at = null;
 
                 long fcId1 = db.flashcardDao().insert(fc1);
                 long fcId2 = db.flashcardDao().insert(fc2);

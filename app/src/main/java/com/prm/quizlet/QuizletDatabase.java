@@ -45,17 +45,4 @@ public abstract class QuizletDatabase extends RoomDatabase {
     public abstract FlashcardDAO flashcardDao();
 
     public abstract StudyingProgressDAO studyingProgressDao();
-
-    public static synchronized QuizletDatabase getInstance(Context context) {
-        if (instance == null) {
-            instance = Room.databaseBuilder(
-                    context.getApplicationContext(),
-                    QuizletDatabase.class,
-                    "quizlet.db")
-                    .fallbackToDestructiveMigration()
-                    .allowMainThreadQueries()
-                    .build();
-        }
-        return instance;
-    }
 }

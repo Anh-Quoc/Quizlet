@@ -34,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
         db = QuizletDatabase.getInstance(getApplicationContext());
 
-        SampleDataPopulator.populateIfEmpty(db);
-
         EditText searchBar = findViewById(R.id.search_bar);
 
         RecyclerView rvFolders = findViewById(R.id.rvFolders);
