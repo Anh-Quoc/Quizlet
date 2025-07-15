@@ -70,6 +70,30 @@ public class SampleDataPopulator {
                 fc2.created_at = null;
 
                 Flashcards fc3 = new Flashcards();
+                fc2.set_id = (int) setId1;
+                fc2.front_text = "water";
+                fc2.back_text = "nước";
+                fc2.image_url = null;
+                fc2.audio_url = null;
+                fc2.created_at = null;
+
+                Flashcards fc7 = new Flashcards();
+                fc2.set_id = (int) setId1;
+                fc2.front_text = "chair";
+                fc2.back_text = "ghế";
+                fc2.image_url = null;
+                fc2.audio_url = null;
+                fc2.created_at = null;
+
+                Flashcards fc5 = new Flashcards();
+                fc2.set_id = (int) setId1;
+                fc2.front_text = "necessary";
+                fc2.back_text = "cần thiết";
+                fc2.image_url = null;
+                fc2.audio_url = null;
+                fc2.created_at = null;
+
+                Flashcards fc6 = new Flashcards();
                 fc3.set_id = (int) setId2;
                 fc3.front_text = "1945";
                 fc3.back_text = "Cách mạng tháng 8 thành công";
@@ -85,10 +109,31 @@ public class SampleDataPopulator {
                 fc4.audio_url = null;
                 fc4.created_at = null;
 
+                Flashcards fc8 = new Flashcards();
+                fc4.set_id = (int) setId2;
+                fc4.front_text = "1972";
+                fc4.back_text = "Chiến thắng Điện Biên Phủ trên không";
+                fc4.image_url = null;
+                fc4.audio_url = null;
+                fc4.created_at = null;
+
+                Flashcards fc9 = new Flashcards();
+                fc4.set_id = (int) setId2;
+                fc4.front_text = "1954";
+                fc4.back_text = "Chiến thắng Điện Biên Phủ";
+                fc4.image_url = null;
+                fc4.audio_url = null;
+                fc4.created_at = null;
+
                 long fcId1 = db.flashcardDao().insert(fc1);
                 long fcId2 = db.flashcardDao().insert(fc2);
                 long fcId3 = db.flashcardDao().insert(fc3);
                 long fcId4 = db.flashcardDao().insert(fc4);
+                long fcId5 = db.flashcardDao().insert(fc5);
+                long fcId6 = db.flashcardDao().insert(fc6);
+                long fcId7 = db.flashcardDao().insert(fc7);
+                long fcId8 = db.flashcardDao().insert(fc8);
+                long fcId9 = db.flashcardDao().insert(fc9);
 
                 // 4. StudyingProgress
                 StudyingProgress sp1 = new StudyingProgress();
@@ -123,10 +168,55 @@ public class SampleDataPopulator {
                 sp4.ease_factor = 2.5f;
                 sp4.next_due = null;
 
+                StudyingProgress sp5 = new StudyingProgress();
+                sp5.flashcard_id = (int) fcId5;
+                sp5.last_studied = null;
+                sp5.correct_count = 0;
+                sp5.wrong_count = 0;
+                sp5.ease_factor = 2.5f;
+                sp5.next_due = null;
+
+                StudyingProgress sp6 = new StudyingProgress();
+                sp6.flashcard_id = (int) fcId6;
+                sp6.last_studied = null;
+                sp6.correct_count = 0;
+                sp6.wrong_count = 0;
+                sp6.ease_factor = 2.5f;
+                sp6.next_due = null;
+
+                StudyingProgress sp7 = new StudyingProgress();
+                sp7.flashcard_id = (int) fcId7;
+                sp7.last_studied = null;
+                sp7.correct_count = 0;
+                sp7.wrong_count = 0;
+                sp7.ease_factor = 2.5f;
+                sp7.next_due = null;
+
+                StudyingProgress sp8 = new StudyingProgress();
+                sp8.flashcard_id = (int) fcId8;
+                sp8.last_studied = null;
+                sp8.correct_count = 0;
+                sp8.wrong_count = 0;
+                sp8.ease_factor = 2.5f;
+                sp8.next_due = null;
+
+                StudyingProgress sp9 = new StudyingProgress();
+                sp9.flashcard_id = (int) fcId9;
+                sp9.last_studied = null;
+                sp9.correct_count = 0;
+                sp9.wrong_count = 0;
+                sp9.ease_factor = 2.5f;
+                sp9.next_due = null;
+
                 db.studyingProgressDao().insert(sp1);
                 db.studyingProgressDao().insert(sp2);
                 db.studyingProgressDao().insert(sp3);
                 db.studyingProgressDao().insert(sp4);
+                db.studyingProgressDao().insert(sp5);
+                db.studyingProgressDao().insert(sp6);
+                db.studyingProgressDao().insert(sp7);
+                db.studyingProgressDao().insert(sp8);
+                db.studyingProgressDao().insert(sp9);
             }
         });
     }

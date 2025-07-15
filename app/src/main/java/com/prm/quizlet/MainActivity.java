@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
                 .fallbackToDestructiveMigration()
                 .build();
 
+        SampleDataPopulator.populateIfEmpty(db);
+
         EditText searchBar = findViewById(R.id.search_bar);
 
         RecyclerView rvFolders = findViewById(R.id.rvFolders);

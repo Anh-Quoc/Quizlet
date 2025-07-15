@@ -1,6 +1,8 @@
 package com.prm.quizlet;
 
+import android.content.Context;
 import androidx.room.Database;
+import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.prm.quizlet.DAO.FlashcardDAO;
@@ -22,9 +24,23 @@ import com.prm.quizlet.entity.StudyingProgress;
         version = 1
 )
 public abstract class QuizletDatabase extends RoomDatabase {
-
+    private static QuizletDatabase instance;
     public abstract FolderDAO folderDao();
     public abstract SetDAO setDao();
     public abstract FlashcardDAO flashcardDao();
     public abstract StudyingProgressDAO studyingProgressDao();
+
+    public static synchronized QuizletDatabase getInstance(Context context) {
+        if (instance == null) {
+            instance = Room.databaseBuilder(
+                            context.getApplicationContext(),
+                            QuizletDatabase.class,
+                            "quizlet.db"
+                    )
+                    .fallbackToDestructiveMigration()
+                    .allowMainThreadQueries()
+                    .build();
+        }
+        return instance;
+    }
 }
