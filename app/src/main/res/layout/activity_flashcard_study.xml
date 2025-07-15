@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#F5F6FA"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <!-- Progress bar -->
+    <ProgressBar
+        android:id="@+id/progressStudy"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:progressTint="#4CAF50"
+        android:layout_alignParentTop="true"/>
+
+    <!-- Text progress (e.g. 1 / 10) -->
+    <TextView
+        android:id="@+id/txtProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1 / 10"
+        android:textSize="16sp"
+        android:textColor="#333"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/progressStudy"
+        android:layout_marginTop="10dp"/>
+
+    <!-- Card display -->
+    <FrameLayout
+        android:id="@+id/cardContainer"
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/flashcard_bg"
+        android:clickable="true"
+        android:focusable="true">
+
+        <TextView
+            android:id="@+id/txtCard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Flashcard Text"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#696969"
+            android:gravity="center"
+            android:padding="20dp"/>
+    </FrameLayout>
+
+    <!-- Navigation and flip hint -->
+    <LinearLayout
+        android:id="@+id/navButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back" />
+
+        <TextView
+            android:id="@+id/tvFlipHint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Tap the card to flip"
+            android:gravity="center"
+            android:textColor="#444"
+            android:textSize="16sp" />
+    </LinearLayout>
+</RelativeLayout>

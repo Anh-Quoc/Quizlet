@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/flashcard_bg"
     android:padding="12dp"
-    android:layout_marginBottom="10dp">
+    android:layout_marginBottom="10dp"
+    android:gravity="center_vertical">
 
     <TextView
         android:id="@+id/tvFlashcardTitle"
@@ -15,6 +15,7 @@
         android:textStyle="bold"
         android:textColor="#222"
         android:textSize="16sp"/>
+
     <TextView
         android:id="@+id/tvFlashcardDesc"
         android:layout_width="wrap_content"
