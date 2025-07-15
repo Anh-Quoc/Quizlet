@@ -16,9 +16,6 @@ public class SampleDataPopulator {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                // Nếu bảng Folder đã có dữ liệu thì không insert nữa
-                if (db.folderDao().getAll().size() > 0) return;
-
                 // 1. Folder
                 Folder folder1 = new Folder();
                 folder1.name = "Tiếng Anh";
