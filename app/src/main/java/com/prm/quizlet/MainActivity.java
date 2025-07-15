@@ -1,5 +1,6 @@
 package com.prm.quizlet;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -19,22 +20,19 @@ import com.prm.quizlet.ui.folder.CreateFolderActivity;
 
 import java.util.List;
 
+import android.content.Intent;
+
 public class MainActivity extends AppCompatActivity {
-    private QuizletDatabase db;
     private FolderAdapter folderAdapter;
     private FlashcardAdapter flashcardAdapter;
+    private QuizletDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        db = Room.databaseBuilder(getApplicationContext(),
-                        QuizletDatabase.class, "quizlet.db")
-                .fallbackToDestructiveMigration()
-                .build();
-
-        SampleDataPopulator.populateIfEmpty(db);
+        db = QuizletDatabase.getInstance(getApplicationContext());
 
         EditText searchBar = findViewById(R.id.search_bar);
 
@@ -44,7 +42,11 @@ public class MainActivity extends AppCompatActivity {
             List<Folder> folders = db.folderDao().getAll();
 
             runOnUiThread(() -> {
-                folderAdapter = new FolderAdapter(folders);
+                folderAdapter = new FolderAdapter(folders, folder -> {
+                    Intent intent = new Intent(MainActivity.this, com.prm.quizlet.ui.folder.FolderActivity.class);
+                    intent.putExtra("folder_id", folder.id);
+                    startActivity(intent);
+                });
                 rvFolders.setAdapter(folderAdapter);
             });
         }).start();
