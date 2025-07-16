@@ -6,34 +6,35 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.prm.quizlet.entity.Flashcards;
 import java.util.List;
 
 public class FlashcardAdapter extends RecyclerView.Adapter<FlashcardAdapter.FlashcardViewHolder> {
-    private List<Flashcards> flashcards;
+    private List<Flashcards> Flashcards;
 
-    public FlashcardAdapter(List<Flashcards> flashcards) {
-        this.flashcards = flashcards;
+    public FlashcardAdapter(List<Flashcards> Flashcards) {
+        this.Flashcards = Flashcards;
     }
 
     @NonNull
     @Override
     public FlashcardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_flashcard, parent, false);
+                .inflate(R.layout.item_flashcards, parent, false);
         return new FlashcardViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull FlashcardViewHolder holder, int position) {
-        Flashcards flashcard = flashcards.get(position);
-        holder.tvTitle.setText(flashcard.front_text);
-        holder.tvDesc.setText(flashcard.back_text);
+        Flashcards flashcards = Flashcards.get(position);
+        holder.tvTitle.setText(flashcards.back_text);
+        holder.tvDesc.setText(flashcards.front_text);
     }
 
     @Override
     public int getItemCount() {
-        return flashcards.size();
+        return Flashcards.size();
     }
 
     static class FlashcardViewHolder extends RecyclerView.ViewHolder {
