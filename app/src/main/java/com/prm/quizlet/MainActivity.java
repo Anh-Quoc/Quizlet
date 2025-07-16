@@ -64,11 +64,11 @@ public class MainActivity extends AppCompatActivity {
         setDailyReminder8AM();
 
         // Initialize the database
-        db = Room.databaseBuilder(getApplicationContext(),
-                        QuizletDatabase.class, "quizlet.db")
-                .fallbackToDestructiveMigration()
-                .build();
-        // db = QuizletDatabase.getInstance(getApplicationContext());
+//        db = Room.databaseBuilder(getApplicationContext(),
+//                        QuizletDatabase.class, "quizlet.db")
+//                .fallbackToDestructiveMigration()
+//                .build();
+        db = QuizletDatabase.getInstance(getApplicationContext());
 
         // Initialize views
         EditText searchBar = findViewById(R.id.search_bar);
