@@ -3,9 +3,6 @@ package com.prm.quizlet.ui;
 import android.os.Bundle;
 import android.widget.Button;
 import android.content.Intent;
-import android.content.SharedPreferences;
-
-import androidx.room.Room;
 
 import com.prm.quizlet.QuizletDatabase;
 import com.prm.quizlet.SampleDataPopulator;

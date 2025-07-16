@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -61,8 +62,7 @@ public class CreateFolderActivity extends AppCompatActivity {
                     Toast.makeText(CreateFolderActivity.this, "Folder created!", Toast.LENGTH_SHORT).show();
                     // Navigate to FolderActivity with the new folder's ID
                     Intent intent = new Intent(CreateFolderActivity.this, com.prm.quizlet.ui.folder.FolderActivity.class);
-                    intent.putExtra("folder_id", id);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("folder_id", (int) id);
                     startActivity(intent);
                     finish();
                 } else {

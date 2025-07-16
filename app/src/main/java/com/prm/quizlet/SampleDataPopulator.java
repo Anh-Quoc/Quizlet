@@ -16,9 +16,6 @@ public class SampleDataPopulator {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                // Nếu bảng Folder đã có dữ liệu thì không insert nữa
-                if (db.folderDao().getAll().size() > 0) return;
-
                 // Ngày mẫu
                 String now = "2025-07-01 09:00:00";
                 String earlier = "2025-06-15 15:30:00";

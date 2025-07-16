@@ -12,6 +12,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Quizlet"
         tools:targetApi="31">
+
+        <!-- Main launcher activity -->
+<!--        <activity-->
+<!--            android:name=".MainActivity"-->
+<!--            android:exported="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+
+        <activity
+            android:name=".ui.WelcomeActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Core activities -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
+
         <activity
             android:name=".SetDetailsActivity"
             android:exported="false" />
@@ -19,51 +44,25 @@
             android:name=".LibraryActivity"
             android:exported="false" />
         <activity
+            android:name=".SetFlashCardActivity"
+            android:exported="true" />
+        <activity
+            android:name=".LearnActivity" />
+        <activity
+            android:name=".FlashcardStudyActivity" />
+
+        <!-- UI/Folder activities -->
+        <activity
             android:name=".ui.folder.FolderActivity"
             android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".ui.WelcomeActivity"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
-
-        <!-- <activity -->
-        <!-- android:name=".MainActivity" -->
-        <!-- android:exported="true"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.MAIN" /> -->
-        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
-
-        <activity
-            android:name=".SetFlashCardActivity"
-            android:exported="true">
-
-        </activity>
-        <receiver
-            android:name=".NotificationReceiver"
-            android:exported="true" />
-        <!-- <activity -->
-        <!-- android:name=".ui.WelcomeActivity" -->
-        <!-- android:exported="true" /> -->
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".ui.folder.CreateFolderActivity"
             android:exported="false" />
-        <activity android:name=".LearnActivity" />
-        <activity android:name=".FlashcardStudyActivity" />
+
+        <!-- Other components -->
+        <receiver
+            android:name=".NotificationReceiver"
+            android:exported="true" />
     </application>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 </manifest>

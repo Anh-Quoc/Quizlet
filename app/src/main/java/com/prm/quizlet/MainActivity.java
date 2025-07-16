@@ -15,13 +15,10 @@ import androidx.core.app.ActivityCompat;
 import android.view.View;
 import android.widget.EditText;
 
-import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.prm.quizlet.entity.Flashcards;
 import com.prm.quizlet.entity.Folder;
 import com.prm.quizlet.entity.Sets;
 import com.prm.quizlet.ui.folder.CreateFolderActivity;
@@ -32,15 +29,11 @@ import java.util.Date;
 import java.util.List;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.Intent;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Locale;
-
-
-import android.content.Intent;
 
 public class MainActivity extends AppCompatActivity implements BottomNavFragment.OnBottomNavClickListener {
     private static final String PREFS_NAME = "study_prefs";
@@ -65,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavFragment
         }
 
         db = QuizletDatabase.getInstance(getApplicationContext());
-        SampleDataPopulator.populateIfEmpty(db);
 
         handleStudyStreak();
         setDailyReminder8AM();
