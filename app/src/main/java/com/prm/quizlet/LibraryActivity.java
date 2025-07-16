@@ -131,6 +131,7 @@ public class LibraryActivity extends AppCompatActivity implements BottomNavFragm
     }
     @Override
     public void onHomeClick() {
+        finish();
         // Chuyển về Home hoặc xử lý gì đó
     }
 

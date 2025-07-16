@@ -4,4 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="purple_500">#6200EE</color> <!-- Ví dụ màu tím -->
     <color name="underline_gray">#E6E8EC</color>
+    <color name="nav_background">#FFFFFF</color>
+    <color name="nav_selected_color">#4F6DF9</color>
+    <color name="nav_unselected_color">#8A92A6</color>
 </resources>

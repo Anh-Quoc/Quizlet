@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="24dp">
+
+        <!-- Animated floating shapes background -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <!-- Decorative floating elements -->
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="top|start"
+                android:layout_marginTop="40dp"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/ic_star_outline"
+                android:alpha="0.1"
+                app:tint="#4F46E5" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="100dp"
+                android:layout_marginEnd="40dp"
+                android:src="@drawable/ic_circle_outline"
+                android:alpha="0.1"
+                app:tint="#EC4899" />
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center|start"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_triangle_outline"
+                android:alpha="0.1"
+                app:tint="#10B981" />
+
+            <!-- Main content container -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <!-- Profile Image with modern styling -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="32dp"
+                    app:cardCornerRadius="100dp"
+                    app:cardElevation="12dp"
+                    app:cardBackgroundColor="@android:color/white">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/welcome_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_launcher_foreground"
+                            android:layout_margin="8dp" />
+
+                        <!-- Gradient overlay -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/image_overlay_gradient"
+                            android:layout_margin="8dp" />
+
+                        <!-- Welcome icon overlay -->
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="bottom|end"
+                            android:layout_margin="16dp"
+                            android:src="@drawable/ic_verified"
+                            android:background="@drawable/circle_background_white"
+                            android:padding="8dp"
+                            app:tint="#4F46E5" />
+
+                    </FrameLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Animated welcome text -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Welcome to"
+                    android:textAlignment="center"
+                    android:textColor="#64748B"
+                    android:textSize="18sp"
+                    android:textStyle="normal"
+                    android:layout_marginBottom="4dp"
+                    android:alpha="0.8" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Quizlet"
+                    android:textAlignment="center"
+                    android:textColor="#1E293B"
+                    android:textSize="40sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="16dp"
+                    android:letterSpacing="0.02" />
+
+                <!-- Subtitle with gradient text effect -->
+                <TextView
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:text="Discover, learn, and master new topics with our interactive study tools"
+                    android:textAlignment="center"
+                    android:textColor="#64748B"
+                    android:textSize="16sp"
+                    android:lineSpacingExtra="4dp"
+                    android:layout_marginBottom="40dp" />
+
+                <!-- Feature highlights -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="32dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_flash_cards"
+                            android:layout_marginBottom="8dp"
+                            app:tint="#4F46E5" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Flash Cards"
+                            android:textColor="#1E293B"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_quiz"
+                            android:layout_marginBottom="8dp"
+                            app:tint="#EC4899" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Interactive Quiz"
+                            android:textColor="#1E293B"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_progress"
+                            android:layout_marginBottom="8dp"
+                            app:tint="#10B981" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Track Progress"
+                            android:textColor="#1E293B"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Call to action button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_get_started"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Get Started"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:icon="@drawable/ic_rocket"
+                    app:iconTint="@android:color/white"
+                    app:iconGravity="textStart"
+                    app:iconPadding="12dp"
+                    android:background="@drawable/button_gradient_background"
+                    android:padding="20dp"
+                    android:layout_marginTop="16dp" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <!-- Bottom decorative wave -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/wave_bottom"
+            android:scaleType="fitXY"
+            android:alpha="0.1" />
+
+    </LinearLayout>
+
+</ScrollView>

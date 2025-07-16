@@ -146,94 +146,48 @@
                     <TextView android:layout_width="24dp" android:layout_height="24dp" android:text="S" style="@style/CalendarDay"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/calendar_day_row"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center"
                     android:layout_gravity="center_horizontal">
-                    <!-- Day numbers -->
-                    <LinearLayout
-                        android:layout_width="24dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="18"
-                            style="@style/CalendarNum"/>
+
+                    <!-- 7 ngày, mỗi ngày là 1 LinearLayout chứa số và dot -->
+                    <LinearLayout android:layout_width="24dp" android:layout_height="wrap_content"
+                        android:orientation="vertical" android:gravity="center_horizontal">
+                        <TextView android:id="@+id/day1" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/CalendarNum"/>
+                        <View android:id="@+id/dot1" android:layout_width="6dp" android:layout_height="6dp" android:layout_marginTop="2dp" android:background="@drawable/active_dot" android:visibility="gone"/>
                     </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="24dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="19"
-                            style="@style/CalendarNum"/>
+                    <LinearLayout android:layout_width="24dp" android:layout_height="wrap_content"
+                        android:orientation="vertical" android:gravity="center_horizontal">
+                        <TextView android:id="@+id/day2" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/CalendarNum"/>
+                        <View android:id="@+id/dot2" android:layout_width="6dp" android:layout_height="6dp" android:layout_marginTop="2dp" android:background="@drawable/active_dot" android:visibility="gone"/>
                     </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="24dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="20"
-                            style="@style/CalendarNum"/>
+                    <LinearLayout android:layout_width="24dp" android:layout_height="wrap_content"
+                        android:orientation="vertical" android:gravity="center_horizontal">
+                        <TextView android:id="@+id/day3" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/CalendarNum"/>
+                        <View android:id="@+id/dot3" android:layout_width="6dp" android:layout_height="6dp" android:layout_marginTop="2dp" android:background="@drawable/active_dot" android:visibility="gone"/>
                     </LinearLayout>
-                    <!-- Ngày active có chấm ở dưới -->
-                    <LinearLayout
-                        android:layout_width="24dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="21"
-                            style="@style/CalendarNumActive"/>
-                        <View
-                            android:layout_width="6dp"
-                            android:layout_height="6dp"
-                            android:layout_marginTop="2dp"
-                            android:background="@drawable/active_dot"/>
+                    <LinearLayout android:layout_width="24dp" android:layout_height="wrap_content"
+                        android:orientation="vertical" android:gravity="center_horizontal">
+                        <TextView android:id="@+id/day4" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/CalendarNum"/>
+                        <View android:id="@+id/dot4" android:layout_width="6dp" android:layout_height="6dp" android:layout_marginTop="2dp" android:background="@drawable/active_dot" android:visibility="gone"/>
                     </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="24dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="22"
-                            style="@style/CalendarNum"/>
+                    <LinearLayout android:layout_width="24dp" android:layout_height="wrap_content"
+                        android:orientation="vertical" android:gravity="center_horizontal">
+                        <TextView android:id="@+id/day5" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/CalendarNum"/>
+                        <View android:id="@+id/dot5" android:layout_width="6dp" android:layout_height="6dp" android:layout_marginTop="2dp" android:background="@drawable/active_dot" android:visibility="gone"/>
                     </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="24dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="23"
-                            style="@style/CalendarNum"/>
+                    <LinearLayout android:layout_width="24dp" android:layout_height="wrap_content"
+                        android:orientation="vertical" android:gravity="center_horizontal">
+                        <TextView android:id="@+id/day6" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/CalendarNum"/>
+                        <View android:id="@+id/dot6" android:layout_width="6dp" android:layout_height="6dp" android:layout_marginTop="2dp" android:background="@drawable/active_dot" android:visibility="gone"/>
                     </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="24dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="24"
-                            style="@style/CalendarNum"/>
+                    <LinearLayout android:layout_width="24dp" android:layout_height="wrap_content"
+                        android:orientation="vertical" android:gravity="center_horizontal">
+                        <TextView android:id="@+id/day7" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/CalendarNum"/>
+                        <View android:id="@+id/dot7" android:layout_width="6dp" android:layout_height="6dp" android:layout_marginTop="2dp" android:background="@drawable/active_dot" android:visibility="gone"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -249,7 +203,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"/>
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvFlashcards"
+                android:id="@+id/rvSets"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"

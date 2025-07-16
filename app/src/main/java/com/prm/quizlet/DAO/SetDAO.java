@@ -38,4 +38,8 @@ public interface SetDAO {
 
     @Query("SELECT * FROM sets ORDER BY created_at DESC")
     List<Sets> getAllOrderByCreatedAtDesc();
+
+    @Query("SELECT * FROM sets WHERE title = :title LIMIT 1")
+    Sets findByTitle(String title);
+
 }

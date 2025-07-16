@@ -13,27 +13,27 @@ import java.util.List;
 @Dao
 public interface FlashcardDAO {
     @Insert
-    long insert(Flashcards Flashcards);
+    long insert(Flashcards flashcards);
 
     @Insert
-    List<Long> insertAll(List<Flashcards> Flashcards);
+    List<Long> insertAll(List<Flashcards> flashcards);
 
     @Update
-    int update(Flashcards Flashcards);
+    int update(Flashcards flashcards);
 
     @Delete
-    int delete(Flashcards Flashcards);
+    int delete(Flashcards flashcards);
 
-    @Query("SELECT * FROM Flashcards")
+    @Query("SELECT * FROM flashcards")
     List<Flashcards> getAll();
 
-    @Query("SELECT * FROM Flashcards WHERE id = :id LIMIT 1")
+    @Query("SELECT * FROM flashcards WHERE id = :id LIMIT 1")
     Flashcards getById(int id);
 
-    @Query("SELECT * FROM Flashcards WHERE set_id = :setId")
+    @Query("SELECT * FROM flashcards WHERE set_id = :setId")
     List<Flashcards> getBySetId(int setId);
 
-    @Query("DELETE FROM Flashcards")
+    @Query("DELETE FROM flashcards")
     void deleteAll();
 
     @Query("SELECT COUNT(*) FROM flashcards WHERE set_id = :setId")

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F8F9FA">
+
+    <!-- Status Bar Space -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0" />
+
+    <!-- Top Bar -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:background="@android:color/white">
+
+        <!-- Close Button -->
+        <ImageView
+            android:id="@+id/btn_close"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_close"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            android:contentDescription="Close"
+            app:tint="#333333" />
+
+        <!-- Done Button -->
+        <ImageView
+            android:id="@+id/btn_done"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_check"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            android:contentDescription="Done"
+            app:tint="#4285F4" />
+
+    </RelativeLayout>
+
+    <!-- Main Content -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="32dp">
+
+        <!-- Folder Icon -->
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_folder_outline"
+            android:layout_marginBottom="24dp"
+            app:tint="#6B7280" />
+
+        <!-- Folder Name -->
+        <EditText
+            android:id="@+id/et_folder_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Untitled folder"
+            android:textSize="24sp"
+            android:textColor="#6B7280"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:background="@android:color/transparent"
+            android:inputType="textPersonName"
+            android:maxLines="1"
+            android:padding="0dp" />
+
+    </LinearLayout>
+
+    <!-- Bottom Home Indicator -->
+    <View
+        android:layout_width="134dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/home_indicator"
+        android:layout_marginTop="8dp" />
+
+</LinearLayout>
