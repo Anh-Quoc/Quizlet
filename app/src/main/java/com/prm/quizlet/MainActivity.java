@@ -1,5 +1,6 @@
 package com.prm.quizlet;
 
+import android.content.Intent;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -13,15 +14,18 @@ import android.content.pm.PackageManager;
 import androidx.core.app.ActivityCompat;
 import android.view.View;
 import android.widget.EditText;
+
 import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.prm.quizlet.entity.Flashcards;
 import com.prm.quizlet.entity.Folder;
 import com.prm.quizlet.entity.Sets;
 import com.prm.quizlet.ui.folder.CreateFolderActivity;
+import com.prm.quizlet.fragment.BottomNavFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,7 +42,7 @@ import java.util.Locale;
 
 import android.content.Intent;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BottomNavFragment.OnBottomNavClickListener {
     private static final String PREFS_NAME = "study_prefs";
     private static final String LAST_STUDY_DATE_KEY = "last_study_date";
     private static final String STREAK_COUNT_KEY = "streak_count";
@@ -60,17 +64,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        db = QuizletDatabase.getInstance(getApplicationContext());
+        SampleDataPopulator.populateIfEmpty(db);
+
         handleStudyStreak();
         setDailyReminder8AM();
 
-        // Initialize the database
-//        db = Room.databaseBuilder(getApplicationContext(),
-//                        QuizletDatabase.class, "quizlet.db")
-//                .fallbackToDestructiveMigration()
-//                .build();
-        db = QuizletDatabase.getInstance(getApplicationContext());
 
-        // Initialize views
+        // Initialize view
         EditText searchBar = findViewById(R.id.search_bar);
 
         RecyclerView rvFolders = findViewById(R.id.rvFolders);
@@ -98,19 +99,17 @@ public class MainActivity extends AppCompatActivity {
                 rvSets.setAdapter(setsAdapter);
             });
         }).start();
-
-        LinearLayout btnCreate = findViewById(R.id.btn_create_nav);
-        btnCreate.setOnClickListener(view -> showCreateBottomSheet());
-
-        LinearLayout btnHome = findViewById(R.id.btn_home_nav);
-        btnHome.setOnClickListener(view -> {
-            finish();
-            startActivity(getIntent());
-            overridePendingTransition(0, 0);
-        });
     }
 
-    private void showCreateBottomSheet() {
+    @Override
+    public void onHomeClick() {
+        finish();
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
+    }
+
+    @Override
+    public void onCreateClick() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View sheetView = getLayoutInflater().inflate(R.layout.layout_bottom_sheet_create, null);
         bottomSheetDialog.setContentView(sheetView);
@@ -127,6 +126,19 @@ public class MainActivity extends AppCompatActivity {
         });
 
         bottomSheetDialog.show();
+    }
+
+    @Override
+    public void onLibraryClick() {
+        // Mở LibraryActivity
+        Intent intent = new Intent(this, LibraryActivity.class);
+        intent.putExtra("selected_nav_id", R.id.btn_library_nav);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onFreeTrialClick() {
+        // Mở trang Free trial
     }
 
     @Override

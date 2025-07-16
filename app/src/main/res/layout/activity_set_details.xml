@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Giao diện giống ảnh bạn gửi, Android Studio + Java, LinearLayout. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#F6F7FB">
+
+    <!-- Toolbar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <!-- Back icon (giả lập bằng TextView) -->
+        <TextView
+            android:id="@+id/tvBack"
+            android:text="←"
+            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="16dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Bookmark và Menu icon -->
+        <TextView
+            android:text="🔖"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="16dp" />
+
+        <TextView
+            android:text="⋮"
+            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <!-- Flashcard area -->
+    <LinearLayout
+        android:id="@+id/flashcardArea"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/rounded_white_bg"
+        android:gravity="center"
+        android:elevation="2dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/kanjiText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="おさけ"
+            android:textSize="32sp"
+            android:textColor="#29304B"
+            android:gravity="center" />
+
+        <!-- Expand icon bottom right -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:padding="8dp">
+            <TextView
+                android:text="⛶"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Page indicator -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
+
+        <View android:layout_width="8dp" android:layout_height="8dp"
+            android:background="@drawable/dot_active"
+            android:layout_margin="2dp"/>
+        <View android:layout_width="8dp" android:layout_height="8dp"
+            android:background="@drawable/dot_inactive"
+            android:layout_margin="2dp"/>
+        <View android:layout_width="8dp" android:layout_height="8dp"
+            android:background="@drawable/dot_inactive"
+            android:layout_margin="2dp"/>
+        <View android:layout_width="8dp" android:layout_height="8dp"
+            android:background="@drawable/dot_inactive"
+            android:layout_margin="2dp"/>
+    </LinearLayout>
+
+    <!-- Kanji title + user + count -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/tvSetTitle"
+            android:text="Kanji"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#29304B"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvDescription"
+                android:text="quizlette568092967"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#29304B"/>
+
+            <TextView
+                android:text=" • "
+                android:textSize="14sp"
+                android:textColor="#29304B"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tvTermCount"
+                android:text="53 terms"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#29304B"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Function buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="8dp">
+
+        <!-- Flashcards -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/rounded_white_bg"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp"
+            android:padding="8dp">
+
+            <ImageView
+                android:src="@drawable/ic_flashcards"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="16dp"/>
+            <TextView
+                android:text="Flashcards"
+                android:textSize="18sp"
+                android:textColor="#29304B"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <!-- Learn -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/rounded_white_bg"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp"
+            android:padding="8dp">
+
+            <ImageView
+                android:src="@drawable/ic_learn"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="16dp"
+                app:tint="#4F6DF9"
+                />
+            <TextView
+                android:text="Learn"
+                android:textSize="18sp"
+                android:textColor="#29304B"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <!-- Test -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/rounded_white_bg"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp"
+            android:padding="8dp">
+
+            <ImageView
+                android:src="@drawable/ic_test"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="16dp"/>
+            <TextView
+                android:text="Test"
+                android:textSize="18sp"
+                android:textColor="#29304B"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/flashcardTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thuật ngữ"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:textColor="#29304B"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:text="Thứ tự gốc"
+            android:textSize="14sp"
+            android:textColor="#29304B"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"/>
+        <ImageView
+            android:src="@drawable/ic_sort"
+            android:layout_width="20dp"
+            android:layout_height="20dp"/>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/flashcardRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="16dp"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"/>
+</LinearLayout>
