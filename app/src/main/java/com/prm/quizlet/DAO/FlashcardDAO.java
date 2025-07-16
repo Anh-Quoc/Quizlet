@@ -35,4 +35,7 @@ public interface FlashcardDAO {
 
     @Query("DELETE FROM Flashcards")
     void deleteAll();
+
+    @Query("SELECT COUNT(*) FROM flashcards WHERE set_id = :setId")
+    int countBySetId(int setId);
 }

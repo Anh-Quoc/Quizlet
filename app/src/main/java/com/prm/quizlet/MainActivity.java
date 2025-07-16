@@ -1,9 +1,9 @@
 package com.prm.quizlet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,13 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.prm.quizlet.DAO.FolderDAO;
 import com.prm.quizlet.entity.Flashcards;
 import com.prm.quizlet.entity.Folder;
+import com.prm.quizlet.fragment.BottomNavFragment;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BottomNavFragment.OnBottomNavClickListener {
     private QuizletDatabase db;
     private FolderAdapter folderAdapter;
     private FlashcardAdapter flashcardAdapter;
@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
                         QuizletDatabase.class, "quizlet.db")
                 .fallbackToDestructiveMigration()
                 .build();
+
+        SampleDataPopulator.populateIfEmpty(db);
 
         EditText searchBar = findViewById(R.id.search_bar);
 
@@ -57,12 +59,15 @@ public class MainActivity extends AppCompatActivity {
                 rvFlashcards.setAdapter(flashcardAdapter);
             });
         }).start();
-
-        LinearLayout btnCreate = findViewById(R.id.btn_create_nav);
-        btnCreate.setOnClickListener(view -> showCreateBottomSheet());
     }
 
-    private void showCreateBottomSheet() {
+    @Override
+    public void onHomeClick() {
+        // Chuyển về Home hoặc xử lý gì đó
+    }
+
+    @Override
+    public void onCreateClick() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View sheetView = getLayoutInflater().inflate(R.layout.layout_bottom_sheet_create, null);
         bottomSheetDialog.setContentView(sheetView);
@@ -78,5 +83,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
         bottomSheetDialog.show();
+    }
+
+    @Override
+    public void onLibraryClick() {
+        // Mở LibraryActivity
+        Intent intent = new Intent(this, LibraryActivity.class);
+        intent.putExtra("selected_nav_id", R.id.btn_library_nav);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onFreeTrialClick() {
+        // Mở trang Free trial
     }
 }

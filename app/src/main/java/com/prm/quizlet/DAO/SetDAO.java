@@ -35,4 +35,7 @@ public interface SetDAO {
 
     @Query("DELETE FROM sets")
     void deleteAll();
+
+    @Query("SELECT * FROM sets ORDER BY created_at DESC")
+    List<Sets> getAllOrderByCreatedAtDesc();
 }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/rounded_white_bg"
+    android:layout_marginBottom="12dp"
+    android:elevation="1dp"
+    android:padding="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:fillViewport="true"
+            android:scrollbars="vertical">
+            <TextView
+                android:id="@+id/tvTerm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="massive"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#29304B"/>
+        </ScrollView>
+
+        <ImageView
+            android:id="@+id/ivSound"
+            android:src="@drawable/ic_sound"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"/>
+        <ImageView
+            android:id="@+id/ivStar"
+            android:src="@drawable/ic_star"
+            android:layout_width="24dp"
+            android:layout_height="24dp"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:fillViewport="true"
+        android:scrollbars="vertical">
+        <TextView
+            android:id="@+id/tvDefinition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="(adj.) large and heavy; great in size or scope"
+            android:textSize="14sp"
+            android:textColor="#29304B"
+            android:layout_marginTop="4dp"/>
+    </ScrollView>
+</LinearLayout>

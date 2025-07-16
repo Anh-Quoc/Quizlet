@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="0dp"
+    android:paddingBottom="8dp">
+
+    <!-- Status bar space (if needed, optional) -->
+    <!-- <View android:layout_width="match_parent" android:layout_height="24dp" /> -->
+
+    <!-- Title row: "Library" + "+" -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="24dp"
+        android:paddingBottom="8dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp">
+
+        <TextView
+            android:id="@+id/tvLibraryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Library"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#23294A"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            />
+
+        <ImageView
+            android:id="@+id/btnAdd"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_add"
+            app:tint="#23294A"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+    <!-- TabLayout -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@android:color/transparent"
+        app:tabIndicatorColor="@color/purple_500"
+        app:tabSelectedTextColor="@color/purple_500"
+        app:tabTextColor="#8A92A6"
+        android:layout_marginTop="0dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        app:tabMode="scrollable"
+        app:tabGravity="fill"
+        android:contentDescription="Library tabs"/>
+
+    <!-- Filter row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="16dp"
+        android:gravity="start">
+
+        <!-- Filter Button "All" -->
+        <LinearLayout
+            android:id="@+id/layoutFilterAll"
+            android:layout_width="88dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_filter_btn"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:clickable="true"
+            android:focusable="true">
+            <TextView
+                android:id="@+id/tvFilterAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="All"
+                android:textColor="#23294A"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_arrow_down"
+                app:tint="#8A92A6"
+                android:layout_marginStart="4dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- EditText cho Filter -->
+    <EditText
+        android:id="@+id/edtFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Filter"
+        android:textColor="#23294A"
+        android:textSize="16sp"
+        android:textStyle="normal"
+        android:background="@android:color/transparent"
+        android:paddingStart="35dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="8dp"
+        android:inputType="text"/>
+
+    <!-- Đường line phân cách dưới EditText -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#000"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"/>
+
+
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewLibrary"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/item_set"/>
+
+    <!-- Bottom Navigation Fragment -->
+    <fragment
+        android:id="@+id/fragmentBottomNav"
+        android:name="com.prm.quizlet.fragment.BottomNavFragment"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        tools:layout="@layout/fragment_bottom_nav" />
+
+</LinearLayout>
