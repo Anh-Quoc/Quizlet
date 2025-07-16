@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.ImageView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,9 +23,18 @@ public class LibraryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
     private OnSetClickListener listener;
 
+    public interface OnSetRemoveListener {
+        void onSetRemove(Sets set);
+    }
+    private OnSetRemoveListener removeListener;
+
     public LibraryAdapter(List<LibraryItem> items, OnSetClickListener listener) {
+        this(items, listener, null);
+    }
+    public LibraryAdapter(List<LibraryItem> items, OnSetClickListener listener, OnSetRemoveListener removeListener) {
         this.items = items;
         this.listener = listener;
+        this.removeListener = removeListener;
     }
     @Override
     public int getItemViewType(int position) {
@@ -57,6 +67,12 @@ public class LibraryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             holder.itemView.setOnClickListener(v -> {
                 if (listener != null) listener.onSetClick(set);
             });
+            if (removeListener != null) {
+                ((ItemViewHolder) holder).btnRemoveFromFolder.setVisibility(View.VISIBLE);
+                ((ItemViewHolder) holder).btnRemoveFromFolder.setOnClickListener(v -> removeListener.onSetRemove(set));
+            } else {
+                ((ItemViewHolder) holder).btnRemoveFromFolder.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -73,11 +89,13 @@ public class LibraryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     static class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvTerms, tvOwner;
+        ImageView btnRemoveFromFolder;
         ItemViewHolder(View v) {
             super(v);
             tvTitle = v.findViewById(R.id.tvTitle);
             tvTerms = v.findViewById(R.id.tvTerms);
             tvOwner = v.findViewById(R.id.tvOwner);
+            btnRemoveFromFolder = v.findViewById(R.id.btnRemoveFromFolder);
         }
     }
 }

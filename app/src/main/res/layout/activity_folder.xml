@@ -3,8 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@android:color/white">
+
+    <!-- Status bar spacer -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:background="@android:color/transparent" />
 
     <!-- Top Bar -->
     <RelativeLayout
@@ -95,61 +102,74 @@
             android:fontFamily="sans-serif-medium" />
     </LinearLayout>
 
-    <!-- Card with icons, subtitle, and button -->
-    <LinearLayout
+    <!-- Card with icons, subtitle, and button (only show when folder is empty) -->
+    <FrameLayout
+        android:id="@+id/emptyFolderView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/rounded_card_bg"
-        android:layout_margin="24dp"
-        android:padding="24dp"
-        android:gravity="center_horizontal">
-
-        <!-- Colorful icons row (replace with your own drawables as needed) -->
+        android:visibility="gone">
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginBottom="16dp">
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/ic_cards"
-                android:layout_marginEnd="8dp" />
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/ic_quiz"
-                android:layout_marginEnd="8dp" />
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/ic_progress" />
+            android:orientation="vertical"
+            android:background="@drawable/rounded_card_bg"
+            android:layout_margin="24dp"
+            android:padding="24dp"
+            android:gravity="center_horizontal">
+            <!-- Colorful icons row (replace with your own drawables as needed) -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="16dp">
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_cards"
+                    android:layout_marginEnd="8dp" />
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_quiz"
+                    android:layout_marginEnd="8dp" />
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_progress" />
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Let's start building your folder"
+                android:textColor="#232B44"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:fontFamily="sans-serif-medium"
+                android:layout_marginBottom="20dp" />
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="Add study materials"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                app:backgroundTint="#4263EB"
+                app:cornerRadius="24dp"
+                android:fontFamily="sans-serif-medium"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:layout_gravity="center_horizontal" />
         </LinearLayout>
+    </FrameLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Let's start building your folder"
-            android:textColor="#232B44"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:fontFamily="sans-serif-medium"
-            android:layout_marginBottom="20dp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:text="Add study materials"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            app:backgroundTint="#4263EB"
-            app:cornerRadius="24dp"
-            android:fontFamily="sans-serif-medium"
-            android:paddingLeft="32dp"
-            android:paddingRight="32dp"
-            android:layout_gravity="center_horizontal" />
-    </LinearLayout>
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewLibrary"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/item_set"/>
 
 </LinearLayout>

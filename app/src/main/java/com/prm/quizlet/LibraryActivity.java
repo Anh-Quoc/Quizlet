@@ -24,6 +24,8 @@ import com.prm.quizlet.library.LibraryAdapter;
 import com.prm.quizlet.library.LibraryItem;
 import com.prm.quizlet.library.MonthHeader;
 import com.prm.quizlet.library.SetItem;
+import com.prm.quizlet.FolderAdapter;
+import com.prm.quizlet.entity.Folder;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -87,6 +89,35 @@ public class LibraryActivity extends AppCompatActivity implements BottomNavFragm
 
             @Override
             public void afterTextChanged(Editable s) {}
+        });
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                if (position == 0) { // Flashcard sets
+                    updateDisplayList(edtFilter.getText().toString());
+                } else if (position == 2) { // Folders
+                    // Show folders
+                    new Thread(() -> {
+                        List<Folder> folders = db.folderDao().getAll();
+                        runOnUiThread(() -> {
+                            FolderAdapter folderAdapter = new FolderAdapter(folders, folder -> {
+                                Intent intent = new Intent(LibraryActivity.this, com.prm.quizlet.ui.folder.FolderActivity.class);
+                                intent.putExtra("folder_id", folder.id);
+                                startActivity(intent);
+                            });
+                            recyclerView.setAdapter(folderAdapter);
+                        });
+                    }).start();
+                } else {
+                    // You can add logic for other tabs here
+                }
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {}
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
         });
     }
 

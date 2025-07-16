@@ -20,16 +20,32 @@
         android:layout_height="wrap_content"
         android:padding="20dp">
 
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:textStyle="bold"
-            android:textColor="#23294A"
-            android:textSize="16sp"
-            android:maxLines="2"
-            android:ellipsize="end"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:textColor="#23294A"
+                android:textSize="16sp"
+                android:maxLines="2"
+                android:ellipsize="end"/>
+
+            <ImageView
+                android:id="@+id/btnRemoveFromFolder"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_close"
+                android:contentDescription="Remove from folder"
+                android:padding="4dp"
+                android:visibility="gone"/>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvTerms"

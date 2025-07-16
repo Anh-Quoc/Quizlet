@@ -32,4 +32,7 @@ public interface FolderDAO {
 
     @Query("DELETE FROM folder")
     void deleteAll();
+
+    @Query("DELETE FROM folder WHERE id = :id")
+    void deleteById(int id);
 }
