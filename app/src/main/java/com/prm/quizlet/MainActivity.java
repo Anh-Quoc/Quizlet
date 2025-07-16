@@ -21,6 +21,7 @@ import androidx.room.Room;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.prm.quizlet.entity.Folder;
 import com.prm.quizlet.entity.Sets;
+import com.prm.quizlet.ui.folder.CreateFolderActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,6 +35,8 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.Locale;
 
+
+import android.content.Intent;
 
 public class MainActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "study_prefs";
@@ -65,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                         QuizletDatabase.class, "quizlet.db")
                 .fallbackToDestructiveMigration()
                 .build();
+        // db = QuizletDatabase.getInstance(getApplicationContext());
 
         // Initialize views
         EditText searchBar = findViewById(R.id.search_bar);
@@ -75,7 +79,11 @@ public class MainActivity extends AppCompatActivity {
             List<Folder> folders = db.folderDao().getAll();
 
             runOnUiThread(() -> {
-                folderAdapter = new FolderAdapter(folders);
+                folderAdapter = new FolderAdapter(folders, folder -> {
+                    Intent intent = new Intent(MainActivity.this, com.prm.quizlet.ui.folder.FolderActivity.class);
+                    intent.putExtra("folder_id", folder.id);
+                    startActivity(intent);
+                });
                 rvFolders.setAdapter(folderAdapter);
             });
         }).start();
@@ -93,6 +101,13 @@ public class MainActivity extends AppCompatActivity {
 
         LinearLayout btnCreate = findViewById(R.id.btn_create_nav);
         btnCreate.setOnClickListener(view -> showCreateBottomSheet());
+
+        LinearLayout btnHome = findViewById(R.id.btn_home_nav);
+        btnHome.setOnClickListener(view -> {
+            finish();
+            startActivity(getIntent());
+            overridePendingTransition(0, 0);
+        });
     }
 
     private void showCreateBottomSheet() {
@@ -105,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
         });
         sheetView.findViewById(R.id.btn_folder).setOnClickListener(v -> {
             bottomSheetDialog.dismiss();
+            startActivity(new android.content.Intent(this, CreateFolderActivity.class));
         });
         sheetView.findViewById(R.id.btn_class).setOnClickListener(v -> {
             bottomSheetDialog.dismiss();

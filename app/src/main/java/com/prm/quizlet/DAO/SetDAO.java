@@ -35,4 +35,8 @@ public interface SetDAO {
 
     @Query("DELETE FROM sets")
     void deleteAll();
+
+    @Query("SELECT * FROM sets WHERE title = :title LIMIT 1")
+    Sets findByTitle(String title);
+
 }

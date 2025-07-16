@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- X icon + Settings (chưa xử lý click) -->
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:orientation="horizontal"-->
+        <!--            android:gravity="space-between"-->
+        <!--            android:paddingBottom="12dp">-->
+
+        <!--            <ImageView-->
+        <!--                android:layout_width="24dp"-->
+        <!--                android:layout_height="24dp"-->
+        <!--                android:src="@drawable/ic_close" />-->
+
+        <!--            <ImageView-->
+        <!--                android:layout_width="24dp"-->
+        <!--                android:layout_height="24dp"-->
+        <!--                android:src="@drawable/ic_settings" />-->
+        <!--        </LinearLayout>-->
+
+        <!-- Progress bar dạng số -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/txtProgressStart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="16"
+                android:textColor="#2D6A4F"
+                android:backgroundTint="#D8F3DC"
+                android:background="@drawable/bg_circle"
+                android:padding="8dp"
+                android:textSize="14sp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="8dp"
+                android:layout_height="10dp"
+                android:progress="30"
+                android:max="100"
+                android:progressTint="#52B788"
+                android:backgroundTint="#E0E0E0" />
+
+            <TextView
+                android:id="@+id/txtProgressEnd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="53"
+                android:textColor="#2D6A4F"
+                android:backgroundTint="#F0F0F0"
+                android:background="@drawable/bg_circle_gray"
+                android:padding="8dp"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Nút Try again -->
+        <Button
+            android:id="@+id/btnRetry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Let's try again"
+            android:backgroundTint="#FFE5D9"
+            android:textColor="#6A4C93"
+            android:layout_gravity="start"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Kanji Question -->
+        <TextView
+            android:id="@+id/txtQuestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="資料"
+            android:textSize="28sp"
+            android:textColor="#1C1C1C"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Instruction -->
+        <TextView
+            android:id="@+id/txtInstruction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose the answer"
+            android:textColor="#6A6A6A"
+            android:textSize="16sp"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Answer cards -->
+        <LinearLayout
+            android:id="@+id/answerContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 4 đáp án tĩnh -->
+            <TextView
+                style="@style/AnswerOption"
+                android:text="くうこう" />
+
+            <TextView
+                style="@style/AnswerOption"
+                android:text="うめしゅ" />
+
+            <TextView
+                style="@style/AnswerOption"
+                android:text="しりょう" />
+
+            <TextView
+                style="@style/AnswerOption"
+                android:text="しゃかい" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Next"
+            android:visibility="gone" />
+    </LinearLayout>
+</ScrollView>
