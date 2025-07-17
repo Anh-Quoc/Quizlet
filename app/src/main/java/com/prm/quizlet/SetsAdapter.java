@@ -11,10 +11,16 @@ import java.util.List;
 
 public class SetsAdapter extends RecyclerView.Adapter<SetsAdapter.SetViewHolder> {
     private List<Sets> Sets;
+    private final OnSetClickListener listener;
 
-    public SetsAdapter(List<Sets> Sets) {
-        this.Sets = Sets;
+    public interface OnSetClickListener {
+        void onSetClick(Sets set);
     }
+    public SetsAdapter(List<Sets> Sets, OnSetClickListener listener) {
+        this.Sets = Sets;
+        this.listener = listener;
+    }
+
 
     @NonNull
     @Override
@@ -26,10 +32,12 @@ public class SetsAdapter extends RecyclerView.Adapter<SetsAdapter.SetViewHolder>
 
     @Override
     public void onBindViewHolder(@NonNull SetViewHolder holder, int position) {
-        Sets sets = Sets.get(position);
-        holder.tvTitle.setText(sets.title);
-        holder.tvDesc.setText(sets.description);
+        Sets set = Sets.get(position);
+        holder.tvTitle.setText(set.title);
+        holder.tvDesc.setText(set.description);
+        holder.bind(set, listener); // ✅ truyền listener
     }
+
 
     @Override
     public int getItemCount() {
@@ -37,11 +45,16 @@ public class SetsAdapter extends RecyclerView.Adapter<SetsAdapter.SetViewHolder>
     }
 
     static class SetViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle, tvDesc;
+        TextView tvTitle, tvDesc, setName;
         SetViewHolder(View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvSetTitle);
             tvDesc = itemView.findViewById(R.id.tvSetDesc);
         }
+
+        void bind(Sets set, OnSetClickListener listener) {
+            itemView.setOnClickListener(v -> listener.onSetClick(set));
+        }
+
     }
 }

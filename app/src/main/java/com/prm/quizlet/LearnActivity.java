@@ -2,147 +2,216 @@ package com.prm.quizlet;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.prm.quizlet.DAO.FlashcardDAO;
+import com.prm.quizlet.DAO.StudyingProgressDAO;
 import com.prm.quizlet.entity.Flashcards;
+import com.prm.quizlet.entity.StudyingProgress;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class LearnActivity extends AppCompatActivity {
 
-    private List<Flashcards> flashcardList;
-    private int currentIndex = 0;
-    private int correctCount = 0;
-
-    private TextView txtQuestion;
-    private LinearLayout answerContainer;
+    private TextView txtQuestion, txtInstruction, txtProgressStart, txtProgressEnd;
     private ProgressBar progressBar;
-    private Button btnNext;
-
-    private Flashcards currentCard;
-    private String correctAnswer = "";
-
+    private Button btnNext, btnRetry;
+    private LinearLayout answerContainer;
+    private StudyingProgressDAO studyingProgressDAO;
     private FlashcardDAO flashcardDAO;
+    private List<Flashcards> flashcardList;
+    private Flashcards currentCard;
+    private int currentIndex = 0;
+    private int correctIndex = -1;
+
     private int setId;
+
+    private List<TextView> answerViews = new ArrayList<>();
+    private boolean answered = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_learn);
 
-        txtQuestion = findViewById(R.id.txtQuestion);
-        answerContainer = findViewById(R.id.answerContainer);
-        progressBar = findViewById(R.id.progressBar);
-        btnNext = findViewById(R.id.btnNext);
-
-        setId = getIntent().getIntExtra("setId", 1);
+        setId = getIntent().getIntExtra("setId", -1);
         if (setId == -1) {
-            Toast.makeText(this, "Thiếu Set ID!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Không tìm thấy Set!", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
+        studyingProgressDAO = QuizletDatabase.getInstance(this).studyingProgressDao();
         flashcardDAO = QuizletDatabase.getInstance(this).flashcardDao();
         flashcardList = flashcardDAO.getBySetId(setId);
-
-        if (flashcardList == null || flashcardList.isEmpty()) {
-            Toast.makeText(this, String.format("Không có flashcard nào trong set %d!", setId), Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }
-
         Collections.shuffle(flashcardList);
+
+        // Gán view
+        txtQuestion = findViewById(R.id.txtQuestion);
+        txtInstruction = findViewById(R.id.txtInstruction);
+        txtProgressStart = findViewById(R.id.txtProgressStart);
+        txtProgressEnd = findViewById(R.id.txtProgressEnd);
+        progressBar = findViewById(R.id.progressBar);
+        btnNext = findViewById(R.id.btnNext);
+        btnRetry = findViewById(R.id.btnRetry);
+        answerContainer = findViewById(R.id.answerContainer);
+
         progressBar.setMax(flashcardList.size());
+        txtProgressEnd.setText(String.valueOf(flashcardList.size()));
 
-        showNextQuestion();
-    }
-
-
-    private void showNextQuestion() {
-        flashcardList = flashcardDAO.getBySetId(setId);
-
-        if (flashcardList == null || flashcardList.isEmpty()) {
-            Toast.makeText(this, "Không có flashcard nào trong set này!", Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }
-
-        if (currentIndex >= flashcardList.size()) {
-            Toast.makeText(this, "Hoàn thành! Đúng: " + correctCount + "/" + flashcardList.size(), Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }
-        Log.d("DEBUG", "Số flashcard: " + flashcardList.size());
-
-        currentCard = flashcardList.get(currentIndex);
-        correctAnswer = currentCard.back_text;
-
-        txtQuestion.setText(currentCard.front_text);
-        answerContainer.removeAllViews();
-        btnNext.setVisibility(View.GONE);
-
-        List<String> options = generateOptions(correctAnswer);
-        Collections.shuffle(options);
-
-        for (String option : options) {
-            Button btn = new Button(this);
-            btn.setText(option);
-            btn.setAllCaps(false);
-            btn.setBackgroundColor(Color.DKGRAY);
-            btn.setTextColor(Color.WHITE);
-            btn.setPadding(20, 10, 20, 10);
-
-            btn.setOnClickListener(v -> checkAnswer((Button) v, option.equals(correctAnswer)));
-
-            answerContainer.addView(btn);
-        }
-
-        progressBar.setProgress(currentIndex);
-    }
-
-    private void checkAnswer(Button selectedBtn, boolean isCorrect) {
-        if (isCorrect) {
-            selectedBtn.setBackgroundColor(Color.parseColor("#4CAF50"));
-            correctCount++;
-        } else {
-            selectedBtn.setBackgroundColor(Color.parseColor("#F44336"));
-            // highlight đúng
-            for (int i = 0; i < answerContainer.getChildCount(); i++) {
-                Button btn = (Button) answerContainer.getChildAt(i);
-                if (btn.getText().toString().equals(correctAnswer)) {
-                    btn.setBackgroundColor(Color.parseColor("#4CAF50"));
-                }
-            }
-        }
-
-        // Disable tất cả lựa chọn
-        for (int i = 0; i < answerContainer.getChildCount(); i++) {
-            answerContainer.getChildAt(i).setEnabled(false);
-        }
-
-        btnNext.setVisibility(View.VISIBLE);
         btnNext.setOnClickListener(view -> {
             currentIndex++;
-            showNextQuestion();
+            if (currentIndex < flashcardList.size()) {
+                loadQuestion();
+            } else {
+                Toast.makeText(this, "Bạn đã hoàn thành tất cả câu hỏi!", Toast.LENGTH_SHORT).show();
+                finish();
+            }
         });
+
+        // Back button
+        ImageView tvBack = findViewById(R.id.tvBack);
+        tvBack.setOnClickListener(v -> finish());
+
+        btnRetry.setVisibility(View.GONE);
+        loadQuestion();
     }
 
-    private List<String> generateOptions(String correctAnswer) {
-        List<String> options = new ArrayList<>();
-        options.add(correctAnswer);
+    private void loadQuestion() {
+        answered = false;
+        answerViews.clear(); // Clear old references
+        answerContainer.removeAllViews();
+        btnNext.setVisibility(View.GONE);
+        btnRetry.setVisibility(View.GONE);
 
-        Random rand = new Random();
-        while (options.size() < 4 && flashcardList.size() > 1) {
-            String fakeAnswer = flashcardList.get(rand.nextInt(flashcardList.size())).back_text;
-            if (!options.contains(fakeAnswer)) {
-                options.add(fakeAnswer);
-            }
+        currentCard = flashcardList.get(currentIndex);
+        txtQuestion.setText(currentCard.front_text);
+        txtProgressStart.setText(String.valueOf(currentIndex + 1));
+        progressBar.setProgress(currentIndex);
+
+        txtInstruction.setText("Choose the answer");
+        txtInstruction.setTextColor(Color.parseColor("#6A6A6A"));
+
+        List<String> options = getShuffledOptions(currentCard);
+        for (int i = 0; i < options.size(); i++) {
+            final int index = i;
+            TextView option = new TextView(this);
+            option.setText(options.get(i));
+            option.setTextSize(18f);
+            option.setTextColor(Color.BLACK);
+            option.setBackgroundResource(R.drawable.bg_answer_option);
+            option.setPadding(24, 24, 24, 24);
+            option.setLayoutParams(new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            ));
+            option.setOnClickListener(v -> handleAnswerSelected(index, option));
+
+            answerViews.add(option);
+            answerContainer.addView(option);
+        }
+    }
+
+    private List<String> getShuffledOptions(Flashcards card) {
+        List<String> result = new ArrayList<>();
+        result.add(card.back_text); // Đáp án đúng
+
+        List<String> otherBackTexts = flashcardList.stream()
+                .filter(c -> c.id != card.id && c.back_text != null)
+                .map(c -> c.back_text)
+                .distinct()
+                .collect(Collectors.toList());
+
+        Collections.shuffle(otherBackTexts);
+        int needed = Math.min(3, otherBackTexts.size());
+        for (int i = 0; i < needed; i++) {
+            result.add(otherBackTexts.get(i));
         }
 
-        return options;
+        while (result.size() < 4) {
+            result.add("Đáp án phụ " + (result.size() + 1));
+        }
+
+        Collections.shuffle(result);
+        correctIndex = result.indexOf(card.back_text);
+        return result;
+    }
+
+    private void handleAnswerSelected(int selectedIndex, TextView selectedView) {
+        if (answered) return;
+
+        answered = true;
+
+        boolean isCorrect = selectedIndex == correctIndex;
+
+        if (isCorrect) {
+            selectedView.setBackgroundResource(R.drawable.bg_answer_correct);
+            txtInstruction.setText("The answer is correct");
+            txtInstruction.setTextColor(Color.parseColor("#2D6A4F"));
+        } else {
+            selectedView.setBackgroundResource(R.drawable.bg_answer_wrong);
+            txtInstruction.setText("Let's try again");
+            txtInstruction.setTextColor(Color.parseColor("#D00000"));
+            btnRetry.setVisibility(View.VISIBLE);
+        }
+
+        updateStudyingProgress(currentCard, isCorrect); // ✅ Lưu tiến độ
+
+        btnNext.setVisibility(View.VISIBLE);
+
+        for (TextView answerView : answerViews) {
+            answerView.setEnabled(false);
+        }
+
+        btnRetry.setOnClickListener(v -> loadQuestion());
+    }
+
+    // ✅ Lưu tiến độ học
+    private void updateStudyingProgress(Flashcards card, boolean isCorrect) {
+        StudyingProgress progress = studyingProgressDAO.getByFlashcardId(card.id);
+        String now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+
+        if (progress == null) {
+            // Chưa có, tạo mới
+            progress = new StudyingProgress();
+            progress.flashcard_id = card.id;
+            progress.last_studied = now;
+            progress.correct_count = isCorrect ? 1 : 0;
+            progress.wrong_count = isCorrect ? 0 : 1;
+            progress.ease_factor = isCorrect ? 2.5f : 2.0f;
+            progress.next_due = now;  // hoặc cộng thêm 1 ngày nếu muốn
+
+            studyingProgressDAO.insert(progress);
+        } else {
+            // Đã có, cập nhật
+            progress.last_studied = now;
+
+            if (isCorrect) {
+                progress.correct_count += 1;
+                progress.ease_factor = Math.min(progress.ease_factor + 0.1f, 3.0f);
+            } else {
+                progress.wrong_count += 1;
+                progress.ease_factor = Math.max(progress.ease_factor - 0.2f, 1.3f);
+            }
+
+            progress.next_due = now;  // hoặc dùng thuật toán spaced repetition ở đây
+            studyingProgressDAO.update(progress);
+        }
+    }
+
+    // ✅ Thuật toán tính next_due đơn giản
+    private long calculateNextDue(StudyingProgress progress, boolean isCorrect) {
+        long now = System.currentTimeMillis();
+        if (isCorrect) {
+            return now + (progress.correct_count + 1) * 24 * 60 * 60 * 1000L;
+        } else {
+            return now + 6 * 60 * 60 * 1000L;
+        }
     }
 }
+

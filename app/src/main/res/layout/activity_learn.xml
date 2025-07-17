@@ -10,24 +10,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- X icon + Settings (chưa xử lý click) -->
-        <!--        <LinearLayout-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:orientation="horizontal"-->
-        <!--            android:gravity="space-between"-->
-        <!--            android:paddingBottom="12dp">-->
 
-        <!--            <ImageView-->
-        <!--                android:layout_width="24dp"-->
-        <!--                android:layout_height="24dp"-->
-        <!--                android:src="@drawable/ic_close" />-->
+        <ImageView
+            android:id="@+id/tvBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_close" />
 
-        <!--            <ImageView-->
-        <!--                android:layout_width="24dp"-->
-        <!--                android:layout_height="24dp"-->
-        <!--                android:src="@drawable/ic_settings" />-->
-        <!--        </LinearLayout>-->
 
         <!-- Progress bar dạng số -->
         <LinearLayout
@@ -72,18 +61,9 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <!-- Nút Try again -->
-        <Button
-            android:id="@+id/btnRetry"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Let's try again"
-            android:backgroundTint="#FFE5D9"
-            android:textColor="#6A4C93"
-            android:layout_gravity="start"
-            android:layout_marginBottom="16dp" />
 
-        <!-- Kanji Question -->
+
+        <!-- Question -->
         <TextView
             android:id="@+id/txtQuestion"
             android:layout_width="wrap_content"
@@ -113,27 +93,55 @@
             <!-- 4 đáp án tĩnh -->
             <TextView
                 style="@style/AnswerOption"
-                android:text="くうこう" />
+                android:text="くうこう"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp" />
 
             <TextView
                 style="@style/AnswerOption"
-                android:text="うめしゅ" />
+                android:text="うめしゅ"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp" />
 
             <TextView
                 style="@style/AnswerOption"
-                android:text="しりょう" />
+                android:text="しりょう"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp" />
 
             <TextView
                 style="@style/AnswerOption"
-                android:text="しゃかい" />
+                android:text="しゃかい"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btnNext"
+        <!-- Nút Try again -->
+        <LinearLayout
+            android:id="@+id/btnContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="Next"
-            android:visibility="gone" />
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnRetry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Try again"
+                android:backgroundTint="#FFE5D9"
+                android:textColor="#6A4C93"
+                android:layout_gravity="start"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp" />
+            <Button
+                android:id="@+id/btnNext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Next" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
