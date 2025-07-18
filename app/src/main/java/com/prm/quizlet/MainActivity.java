@@ -87,7 +87,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavFragment
             List<Sets> sets = db.setDao().getAll();
 
             runOnUiThread(() -> {
-                setsAdapter = new SetsAdapter(sets);
+                setsAdapter = new SetsAdapter(sets, set -> {
+                    Intent intent = new Intent(MainActivity.this, com.prm.quizlet.SetDetailsActivity.class);
+                    intent.putExtra("set_id", set.id);
+                    startActivity(intent);
+                });
                 rvSets.setAdapter(setsAdapter);
             });
         }).start();

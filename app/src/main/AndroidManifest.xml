@@ -44,9 +44,6 @@
             android:name=".LibraryActivity"
             android:exported="false" />
         <activity
-            android:name=".SetFlashCardActivity"
-            android:exported="true" />
-        <activity
             android:name=".LearnActivity" />
         <activity
             android:name=".FlashcardStudyActivity" />

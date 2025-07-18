@@ -55,7 +55,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/kanjiText"
+            android:id="@+id/flashcardText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="おさけ"
@@ -158,13 +158,16 @@
 
         <!-- Flashcards -->
         <LinearLayout
+            android:id="@+id/btnFlashCard"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@drawable/rounded_white_bg"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:layout_marginBottom="8dp"
-            android:padding="8dp">
+            android:padding="8dp"
+            android:clickable="true"
+            android:focusable="true">
 
             <ImageView
                 android:src="@drawable/ic_flashcards"
@@ -179,15 +182,19 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
+
         <!-- Learn -->
         <LinearLayout
+            android:id="@+id/btnLearn"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@drawable/rounded_white_bg"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:layout_marginBottom="8dp"
-            android:padding="8dp">
+            android:padding="8dp"
+            android:clickable="true"
+            android:focusable="true">
 
             <ImageView
                 android:src="@drawable/ic_learn"
@@ -212,7 +219,9 @@
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:layout_marginBottom="8dp"
-            android:padding="8dp">
+            android:padding="8dp"
+            android:clickable="true"
+            android:focusable="true">
 
             <ImageView
                 android:src="@drawable/ic_test"

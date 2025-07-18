@@ -87,6 +87,10 @@ public class FlashcardStudyActivity extends AppCompatActivity {
             }
         });
 
+        // Back button
+        ImageView tvBack = findViewById(R.id.tvBack);
+        tvBack.setOnClickListener(v -> finish());
+
         txtCard.setOnTouchListener((v, event) -> gestureDetector.onTouchEvent(event));
 
         btnBack.setOnClickListener(v -> {

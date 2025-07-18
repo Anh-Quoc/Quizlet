@@ -1,10 +1,14 @@
 package com.prm.quizlet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
+
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,7 +31,7 @@ public class SetDetailsActivity extends AppCompatActivity {
     private FlashcardDetailsAdapter adapter;
     private int currentIndex = 0;
     private boolean showingFront = true;
-    private TextView kanjiText;
+    private TextView flashcardText;
     private QuizletDatabase db;
 
     // In SetDetailsActivity.java, add these fields:
@@ -39,9 +43,15 @@ public class SetDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_set_details);
 
         int setId = getIntent().getIntExtra("set_id", -1);
-
-        kanjiText = findViewById(R.id.kanjiText);
+        if (setId == -1) {
+            Toast.makeText(this, "Set not found", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        flashcardText = findViewById(R.id.flashcardText);
         LinearLayout flashcardArea = findViewById(R.id.flashcardArea);
+        LinearLayout btnFlashCard = findViewById(R.id.btnFlashCard);
+        LinearLayout btnLearn = findViewById(R.id.btnLearn);
 
         db = Room.databaseBuilder(getApplicationContext(),
                         QuizletDatabase.class, "quizlet.db")
@@ -102,24 +112,37 @@ public class SetDetailsActivity extends AppCompatActivity {
         // Back button
         TextView tvBack = findViewById(R.id.tvBack);
         tvBack.setOnClickListener(v -> finish());
+
+
+        btnFlashCard.setOnClickListener(view -> {
+            Intent intent = new Intent(SetDetailsActivity.this, FlashcardStudyActivity.class);
+            intent.putExtra("setId", setId);
+            startActivity(intent);
+        });
+
+        btnLearn.setOnClickListener(view -> {
+            Intent intent = new Intent(SetDetailsActivity.this, LearnActivity.class);
+            intent.putExtra("setId", setId);
+            startActivity(intent);
+        });
     }
 
     private void showCurrentFlashcard() {
         if (flashcards == null || flashcards.isEmpty()) {
-            kanjiText.setText("No flashcards");
+            flashcardText.setText("No flashcards");
             return;
         }
         showingFront = true;
-        kanjiText.setText(flashcards.get(currentIndex).front_text);
+        flashcardText.setText(flashcards.get(currentIndex).front_text);
     }
 
     private void flipCard() {
         if (flashcards == null || flashcards.isEmpty()) return;
         Flashcards card = flashcards.get(currentIndex);
         if (showingFront) {
-            kanjiText.setText(card.back_text);
+            flashcardText.setText(card.back_text);
         } else {
-            kanjiText.setText(card.front_text);
+            flashcardText.setText(card.front_text);
         }
         showingFront = !showingFront;
     }
