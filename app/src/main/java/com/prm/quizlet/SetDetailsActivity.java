@@ -52,6 +52,7 @@ public class SetDetailsActivity extends AppCompatActivity {
         LinearLayout flashcardArea = findViewById(R.id.flashcardArea);
         LinearLayout btnFlashCard = findViewById(R.id.btnFlashCard);
         LinearLayout btnLearn = findViewById(R.id.btnLearn);
+        LinearLayout btnTest = findViewById(R.id.btnTest);
 
         db = Room.databaseBuilder(getApplicationContext(),
                         QuizletDatabase.class, "quizlet.db")
@@ -122,6 +123,12 @@ public class SetDetailsActivity extends AppCompatActivity {
 
         btnLearn.setOnClickListener(view -> {
             Intent intent = new Intent(SetDetailsActivity.this, LearnActivity.class);
+            intent.putExtra("setId", setId);
+            startActivity(intent);
+        });
+
+        btnTest.setOnClickListener(view -> {
+            Intent intent = new Intent(SetDetailsActivity.this, TestActivity.class);
             intent.putExtra("setId", setId);
             startActivity(intent);
         });

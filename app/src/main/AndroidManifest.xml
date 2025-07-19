@@ -47,6 +47,8 @@
             android:name=".LearnActivity" />
         <activity
             android:name=".FlashcardStudyActivity" />
+        <activity
+            android:name=".TestActivity" />
 
         <!-- UI/Folder activities -->
         <activity
