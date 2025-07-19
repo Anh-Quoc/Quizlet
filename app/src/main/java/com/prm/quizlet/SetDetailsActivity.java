@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.widget.LinearLayout;
 
 import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,13 +35,44 @@ public class SetDetailsActivity extends AppCompatActivity {
     private TextView flashcardText;
     private QuizletDatabase db;
 
+    private int setId;
+
     // In SetDetailsActivity.java, add these fields:
     private TextView tvSetTitle, tvTermCount, tvDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_details);
+
+        TextView btnOptions = findViewById(R.id.btnOptions);
+        btnOptions.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(SetDetailsActivity.this, v);
+            popupMenu.getMenuInflater().inflate(R.menu.flashcards_detail_popup_menu, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == R.id.menu_edit) {
+                    // Open EditSetActivity
+                    Intent intent = new Intent(SetDetailsActivity.this, EditSetActivity.class);
+                    intent.putExtra("set_id", getIntent().getIntExtra("set_id", -1));
+                    startActivity(intent);
+                    return true;
+                } else if (item.getItemId() == R.id.menu_delete) {
+                    int setId = getIntent().getIntExtra("set_id", -1);
+                    new Thread(() -> {
+                        db.flashcardDao().deleteBySetId(setId);
+                        db.setDao().delete(db.setDao().getById(setId));
+                        runOnUiThread(() -> {
+                            Toast.makeText(SetDetailsActivity.this, "Set deleted", Toast.LENGTH_SHORT).show();
+                            finish();
+                        });
+                    }).start();
+                    return true;
+                }
+                return false;
+            });
+            popupMenu.show();
+        });
 
         int setId = getIntent().getIntExtra("set_id", -1);
         if (setId == -1) {
@@ -48,6 +80,10 @@ public class SetDetailsActivity extends AppCompatActivity {
             finish();
             return;
         }
+
+        // Store setId as a field so we can access it later in onResume
+        this.setId = setId;
+
         flashcardText = findViewById(R.id.flashcardText);
         LinearLayout flashcardArea = findViewById(R.id.flashcardArea);
         LinearLayout btnFlashCard = findViewById(R.id.btnFlashCard);
@@ -105,7 +141,6 @@ public class SetDetailsActivity extends AppCompatActivity {
             }
         });
 
-        // Set listeners on the flashcard area (not just kanjiText)
         flashcardArea.setOnClickListener(v -> flipCard());
         flashcardArea.setOnTouchListener((v, event) -> gestureDetector.onTouchEvent(event));
 
@@ -125,6 +160,30 @@ public class SetDetailsActivity extends AppCompatActivity {
             intent.putExtra("setId", setId);
             startActivity(intent);
         });
+    }
+
+    private void loadSetData(int setId) {
+        new Thread(() -> {
+            flashcards = db.flashcardDao().getBySetId(setId);
+            Sets set = db.setDao().getById(setId);
+            runOnUiThread(() -> {
+                adapter = new FlashcardDetailsAdapter(flashcards);
+                RecyclerView recyclerView = findViewById(R.id.flashcardRecyclerView);
+                recyclerView.setAdapter(adapter);
+                showCurrentFlashcard();
+                if (set != null) {
+                    tvSetTitle.setText(set.title);
+                    tvDescription.setText(set.description);
+                }
+                tvTermCount.setText(flashcards.size() + " terms");
+            });
+        }).start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadSetData(setId);
     }
 
     private void showCurrentFlashcard() {
