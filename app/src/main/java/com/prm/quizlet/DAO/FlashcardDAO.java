@@ -24,6 +24,9 @@ public interface FlashcardDAO {
     @Delete
     int delete(Flashcards flashcards);
 
+    @Query("DELETE FROM Flashcards WHERE set_id = :setId")
+    void deleteBySetId(int setId);
+
     @Query("SELECT * FROM flashcards")
     List<Flashcards> getAll();
 

@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavFragment
 
         sheetView.findViewById(R.id.btn_flashcard_set).setOnClickListener(v -> {
             bottomSheetDialog.dismiss();
+            startActivity(new android.content.Intent(this, CreateSetActivity.class));
         });
         sheetView.findViewById(R.id.btn_folder).setOnClickListener(v -> {
             bottomSheetDialog.dismiss();
@@ -154,6 +155,30 @@ public class MainActivity extends AppCompatActivity implements BottomNavFragment
                         .show();
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadSets(); // ✅ Refresh data every time MainActivity is visible again
+    }
+
+    private void loadSets() {
+        RecyclerView rvSets = findViewById(R.id.rvSets);
+        rvSets.setLayoutManager(new LinearLayoutManager(this));
+
+        new Thread(() -> {
+            List<Sets> sets = db.setDao().getAll();
+
+            runOnUiThread(() -> {
+                setsAdapter = new SetsAdapter(sets, set -> {
+                    Intent intent = new Intent(MainActivity.this, SetDetailsActivity.class);
+                    intent.putExtra("set_id", set.id);
+                    startActivity(intent);
+                });
+                rvSets.setAdapter(setsAdapter);
+            });
+        }).start();
     }
 
     private void showCurrentWeek() {

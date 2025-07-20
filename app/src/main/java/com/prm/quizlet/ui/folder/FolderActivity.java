@@ -92,6 +92,14 @@ public class FolderActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
+        findViewById(R.id.btn_add_study_materials).setOnClickListener(v -> {
+            showMultiSelectAddSetDialog(folderId);
+        });
+
+        findViewById(R.id.btn_add_multiple_set).setOnClickListener(v -> {
+            showMultiSelectAddSetDialog(folderId);
+        });
+
         // Load folder and sets from database in background
         new Thread(() -> {
             QuizletDatabase db = Room.databaseBuilder(getApplicationContext(), QuizletDatabase.class, "quizlet.db")
@@ -298,6 +306,88 @@ public class FolderActivity extends AppCompatActivity {
                     }).start();
                 });
                 builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+                builder.show();
+            });
+        }).start();
+    }
+
+    private void showMultiSelectAddSetDialog(int folderId) {
+        new Thread(() -> {
+            QuizletDatabase db = Room.databaseBuilder(getApplicationContext(), QuizletDatabase.class, "quizlet.db")
+                    .fallbackToDestructiveMigration()
+                    .build();
+            List<Sets> availableSets = db.setDao().getAll();
+            List<Sets> unassignedSets = new ArrayList<>();
+            for (Sets set : availableSets) {
+                if (set.folder_id == null) {
+                    unassignedSets.add(set);
+                }
+            }
+
+            runOnUiThread(() -> {
+                if (unassignedSets.isEmpty()) {
+                    Toast.makeText(this, "No available sets to add", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                String[] titles = new String[unassignedSets.size()];
+                boolean[] checkedItems = new boolean[unassignedSets.size()];
+                for (int i = 0; i < unassignedSets.size(); i++) {
+                    titles[i] = unassignedSets.get(i).title;
+                }
+
+                List<Sets> selectedSets = new ArrayList<>();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Select sets to add");
+                builder.setMultiChoiceItems(titles, checkedItems, (dialog, which, isChecked) -> {
+                    Sets set = unassignedSets.get(which);
+                    if (isChecked) {
+                        selectedSets.add(set);
+                    } else {
+                        selectedSets.remove(set);
+                    }
+                });
+
+                builder.setPositiveButton("Add", (dialog, which) -> {
+                    new Thread(() -> {
+                        for (Sets set : selectedSets) {
+                            set.folder_id = folderId;
+                            db.setDao().update(set);
+                        }
+
+                        // Refresh list
+                        List<Sets> setsInFolder = db.setDao().getByFolderId(folderId);
+                        List<LibraryItem> displayList = new ArrayList<>();
+                        for (Sets set : setsInFolder) {
+                            int flashcardCount = db.flashcardDao().countBySetId(set.id);
+                            displayList.add(new SetItem(set, flashcardCount));
+                        }
+
+                        runOnUiThread(() -> {
+                            RecyclerView recyclerView = findViewById(R.id.recyclerViewLibrary);
+                            View emptyFolderView = findViewById(R.id.emptyFolderView);
+                            if (displayList.isEmpty()) {
+                                emptyFolderView.setVisibility(View.VISIBLE);
+                                recyclerView.setVisibility(View.GONE);
+                            } else {
+                                emptyFolderView.setVisibility(View.GONE);
+                                recyclerView.setVisibility(View.VISIBLE);
+                            }
+
+                            LibraryAdapter adapter = new LibraryAdapter(displayList, set -> {
+                                Intent intent = new Intent(FolderActivity.this, com.prm.quizlet.SetDetailsActivity.class);
+                                intent.putExtra("set_id", set.id);
+                                startActivity(intent);
+                            }, s -> showRemoveSetFromFolderDialog(s, folderId));
+                            recyclerView.setAdapter(adapter);
+
+                            Toast.makeText(this, "Sets added to folder", Toast.LENGTH_SHORT).show();
+                        });
+                    }).start();
+                });
+
+                builder.setNegativeButton("Cancel", null);
                 builder.show();
             });
         }).start();

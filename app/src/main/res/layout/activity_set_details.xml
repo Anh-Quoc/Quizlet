@@ -37,10 +37,14 @@
             android:paddingEnd="16dp" />
 
         <TextView
+            android:id="@+id/btnOptions"
             android:text="⋮"
             android:textSize="24sp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:clickable="true"
+            android:focusable="true" />
     </LinearLayout>
 
     <!-- Flashcard area -->
