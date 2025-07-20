@@ -3,7 +3,6 @@ package com.prm.quizlet;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class LearnActivity extends AppCompatActivity {
 
-    private TextView txtQuestion, txtInstruction, txtProgressStart, txtProgressEnd;
+    private TextView answer1, answer2, answer3, answer4, txtQuestion, txtInstruction, txtProgressStart, txtProgressEnd;
     private ProgressBar progressBar;
     private Button btnNext, btnRetry;
     private LinearLayout answerContainer;
@@ -28,9 +27,7 @@ public class LearnActivity extends AppCompatActivity {
     private Flashcards currentCard;
     private int currentIndex = 0;
     private int correctIndex = -1;
-
     private int setId;
-
     private List<TextView> answerViews = new ArrayList<>();
     private boolean answered = false;
 
@@ -60,6 +57,15 @@ public class LearnActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btnNext);
         btnRetry = findViewById(R.id.btnRetry);
         answerContainer = findViewById(R.id.answerContainer);
+        answer1 = findViewById(R.id.answer1);
+        answer2 = findViewById(R.id.answer2);
+        answer3 = findViewById(R.id.answer3);
+        answer4 = findViewById(R.id.answer4);
+
+        answerViews.add(answer1);
+        answerViews.add(answer2);
+        answerViews.add(answer3);
+        answerViews.add(answer4);
 
         progressBar.setMax(flashcardList.size());
         txtProgressEnd.setText(String.valueOf(flashcardList.size()));
@@ -84,8 +90,6 @@ public class LearnActivity extends AppCompatActivity {
 
     private void loadQuestion() {
         answered = false;
-        answerViews.clear(); // Clear old references
-        answerContainer.removeAllViews();
         btnNext.setVisibility(View.GONE);
         btnRetry.setVisibility(View.GONE);
 
@@ -98,24 +102,17 @@ public class LearnActivity extends AppCompatActivity {
         txtInstruction.setTextColor(Color.parseColor("#6A6A6A"));
 
         List<String> options = getShuffledOptions(currentCard);
-        for (int i = 0; i < options.size(); i++) {
-            final int index = i;
-            TextView option = new TextView(this);
+        for (int i = 0; i < answerViews.size(); i++) {
+            TextView option = answerViews.get(i);
             option.setText(options.get(i));
-            option.setTextSize(18f);
-            option.setTextColor(Color.BLACK);
             option.setBackgroundResource(R.drawable.bg_answer_option);
-            option.setPadding(24, 24, 24, 24);
-            option.setLayoutParams(new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-            ));
-            option.setOnClickListener(v -> handleAnswerSelected(index, option));
+            option.setEnabled(true); // Reset trạng thái nếu đã chọn trước đó
+            final int index = i;
 
-            answerViews.add(option);
-            answerContainer.addView(option);
+            option.setOnClickListener(v -> handleAnswerSelected(index, option));
         }
     }
+
 
     private List<String> getShuffledOptions(Flashcards card) {
         List<String> result = new ArrayList<>();
@@ -204,14 +201,5 @@ public class LearnActivity extends AppCompatActivity {
         }
     }
 
-    // ✅ Thuật toán tính next_due đơn giản
-    private long calculateNextDue(StudyingProgress progress, boolean isCorrect) {
-        long now = System.currentTimeMillis();
-        if (isCorrect) {
-            return now + (progress.correct_count + 1) * 24 * 60 * 60 * 1000L;
-        } else {
-            return now + 6 * 60 * 60 * 1000L;
-        }
-    }
 }
 

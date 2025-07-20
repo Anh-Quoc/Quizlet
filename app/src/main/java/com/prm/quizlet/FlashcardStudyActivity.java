@@ -2,7 +2,10 @@ package com.prm.quizlet;
 
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,9 +23,13 @@ import java.util.*;
 
 public class FlashcardStudyActivity extends AppCompatActivity {
 
+    private static final String PREFS_NAME = "FlashcardProgressPrefs"; // More descriptive name
+    private static final String KEY_LAST_FLASHCARD_ID_PREFIX = "last_flashcard_id_for_set_"; // Key prefix
+
     private List<Flashcards> flashcardList;
     private Stack<Integer> history = new Stack<>();
     private int currentIndex = 0;
+    private int setId;
     private boolean isFrontShowing = true;
 
     private TextView txtCard, txtProgress, btnBack;
@@ -46,9 +53,7 @@ public class FlashcardStudyActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btnBack);
         progressBar = findViewById(R.id.progressStudy);
 
-
-
-        int setId = getIntent().getIntExtra("setId", -1);
+        setId = getIntent().getIntExtra("setId", -1);
         if (setId == -1) {
             Toast.makeText(this, "Không tìm thấy Set!", Toast.LENGTH_SHORT).show();
             finish();
@@ -61,6 +66,7 @@ public class FlashcardStudyActivity extends AppCompatActivity {
             finish();
             return;
         }
+        loadSavedProgress();
 
         setupAnimations();
         progressBar.setMax(flashcardList.size());
@@ -97,6 +103,8 @@ public class FlashcardStudyActivity extends AppCompatActivity {
             if (!history.isEmpty()) {
                 currentIndex = history.pop();
                 showCurrentCard();
+                // When going back, we should also save the new current card as the last viewed
+                saveCurrentFlashcardProgress();
             }
         });
     }
@@ -111,6 +119,8 @@ public class FlashcardStudyActivity extends AppCompatActivity {
     private void showCurrentCard() {
         if (currentIndex >= flashcardList.size()) {
             Toast.makeText(this, "Hoàn thành tất cả thẻ!", Toast.LENGTH_SHORT).show();
+            clearSavedProgressForSet();
+            finish();
             return;
         }
 
@@ -123,6 +133,7 @@ public class FlashcardStudyActivity extends AppCompatActivity {
     }
 
     private void flipCard() {
+        if (currentIndex >= flashcardList.size()) return; // Avoid issues if trying to flip completed card
         Flashcards card = flashcardList.get(currentIndex);
         flipOut.start();
         txtCard.setText(isFrontShowing ? card.back_text : card.front_text);
@@ -131,6 +142,8 @@ public class FlashcardStudyActivity extends AppCompatActivity {
     }
 
     private void swipeCard(boolean remembered) {
+        if (currentIndex >= flashcardList.size()) return; // Already completed
+
         updateStudyingProgress(remembered);
         history.push(currentIndex);
 
@@ -144,10 +157,19 @@ public class FlashcardStudyActivity extends AppCompatActivity {
         txtCard.postDelayed(() -> {
             currentIndex++;
             showCurrentCard();
-        }, 300); // Delay to let user see border
+            // --- Save progress after swiping to the NEXT card (or completion) ---
+            if (currentIndex < flashcardList.size()) {
+                saveCurrentFlashcardProgress();
+            } else {
+                // If all cards are completed, the progress for this set is cleared by showCurrentCard
+                // Or you can explicitly call clearSavedProgressForSet() here if showCurrentCard's logic changes
+            }
+            // --- End saving ---
+        }, 300);
     }
 
     private void updateStudyingProgress(boolean correct) {
+        if (currentIndex >= flashcardList.size()) return;
         Flashcards card = flashcardList.get(currentIndex);
         StudyingProgress progress = studyingProgressDAO.getByFlashcardId(card.id);
 
@@ -162,7 +184,8 @@ public class FlashcardStudyActivity extends AppCompatActivity {
             else progress.wrong_count++;
         }
 
-        progress.last_studied = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        progress.last_studied = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+        // progress.next_due = ... // Calculate next_due if implementing SM-2
         insertOrUpdateProgress(progress);
     }
 
@@ -174,5 +197,81 @@ public class FlashcardStudyActivity extends AppCompatActivity {
             progress.id = existing.id;
             studyingProgressDAO.update(progress);
         }
+    }
+
+    // --- SharedPreferences Methods ---
+
+    private void saveCurrentFlashcardProgress() {
+        if (flashcardList == null || flashcardList.isEmpty() || currentIndex >= flashcardList.size() || setId == -1) {
+            Log.w("FlashcardStudy", "Cannot save progress: Invalid state.");
+            return;
+        }
+
+        Flashcards currentCard = flashcardList.get(currentIndex);
+        int flashcardIdToSave = currentCard.id;
+
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(KEY_LAST_FLASHCARD_ID_PREFIX + setId, flashcardIdToSave);
+        editor.apply();
+        Log.d("FlashcardStudy", "Saved progress: Set ID " + setId + ", Flashcard ID " + flashcardIdToSave);
+    }
+
+    private void loadSavedProgress() {
+        if (setId == -1 || flashcardList == null || flashcardList.isEmpty()) {
+            currentIndex = 0; // Default to first card if no set ID or no flashcards
+            return;
+        }
+
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        // Default to -1 or any other invalid ID if no progress is saved for this set
+        int savedFlashcardId = prefs.getInt(KEY_LAST_FLASHCARD_ID_PREFIX + setId, -1);
+
+        if (savedFlashcardId != -1) {
+            for (int i = 0; i < flashcardList.size(); i++) {
+                if (flashcardList.get(i).id == savedFlashcardId) {
+                    currentIndex = i;
+                    Log.d("FlashcardStudy", "Loaded progress: Set ID " + setId + ", Found Flashcard ID " + savedFlashcardId + " at index " + i);
+                    return; // Found the saved card, exit
+                }
+            }
+            // If savedFlashcardId was found but not in current list (e.g., card deleted), start from beginning
+            Log.w("FlashcardStudy", "Saved Flashcard ID " + savedFlashcardId + " not found in current list for Set ID " + setId + ". Starting from beginning.");
+            currentIndex = 0;
+        } else {
+            // No saved progress for this set, start from the beginning
+            Log.d("FlashcardStudy", "No saved progress found for Set ID " + setId + ". Starting from beginning.");
+            currentIndex = 0;
+        }
+    }
+
+    private void clearSavedProgressForSet() {
+        if (setId == -1) return;
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove(KEY_LAST_FLASHCARD_ID_PREFIX + setId);
+        editor.apply();
+        Log.d("FlashcardStudy", "Cleared saved progress for Set ID: " + setId);
+    }
+
+    // --- End SharedPreferences Methods ---
+
+    // Optional: Save progress when the activity is paused or stopped
+    // This is a good fallback if the app is closed unexpectedly.
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (currentIndex < flashcardList.size()) { // Only save if not completed
+            saveCurrentFlashcardProgress();
+        }
+        Log.d("FlashcardStudy", "onPause - progress potentially saved.");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // You could also save here, but onPause is generally sufficient for this use case.
+        // If you save in both, it's not harmful due to overwriting.
+        Log.d("FlashcardStudy", "onStop called.");
     }
 }
