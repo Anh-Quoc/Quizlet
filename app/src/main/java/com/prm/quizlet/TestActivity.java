@@ -137,7 +137,7 @@ public class TestActivity extends AppCompatActivity {
                 .setMessage("Bạn đã đúng " + correctCount + "/" + flashcards.size() +
                         " câu\nTỉ lệ: " + (correctCount * 100 / flashcards.size()) + "%")
                 .setPositiveButton("Làm lại", (dialog, which) -> recreate())
-                .setNegativeButton("Thoát về Set", (dialog, which) -> finish())
+                .setNegativeButton("Thoát", (dialog, which) -> finish())
                 .setCancelable(false)
                 .show();
     }
@@ -163,6 +163,7 @@ public class TestActivity extends AppCompatActivity {
             runOnUiThread(() -> {
                 flashcards.clear();
                 flashcards.addAll(loadedFlashcards);
+                tvProgress.setText(selectedAnswers.size() + "/" + flashcards.size() + " câu đã trả lời");
 
                 if (flashcards.isEmpty()) {
                     new AlertDialog.Builder(this)

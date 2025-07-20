@@ -90,35 +90,27 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- 4 đáp án tĩnh -->
             <TextView
+                android:id="@+id/answer1"
                 style="@style/AnswerOption"
-                android:text="くうこう"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp" />
 
             <TextView
+                android:id="@+id/answer2"
                 style="@style/AnswerOption"
-                android:text="うめしゅ"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp" />
 
             <TextView
+                android:id="@+id/answer3"
                 style="@style/AnswerOption"
-                android:text="しりょう"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp" />
 
             <TextView
+                android:id="@+id/answer4"
                 style="@style/AnswerOption"
-                android:text="しゃかい"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp" />
         </LinearLayout>
+
 
         <!-- Nút Try again -->
         <LinearLayout
