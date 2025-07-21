@@ -1,5 +1,7 @@
 package com.prm.quizlet;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
@@ -17,6 +21,12 @@ import com.prm.quizlet.DAO.SetDAO;
 import com.prm.quizlet.entity.Flashcards;
 import com.prm.quizlet.entity.Sets;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +40,20 @@ public class EditSetActivity extends AppCompatActivity {
     private int setId;
     private Sets existingSet;
     private List<Flashcards> existingFlashcards;
+    private final ActivityResultLauncher<Intent> filePickerLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Uri uri = result.getData().getData();
+                    if (uri != null) {
+                        try {
+                            importFlashcardsFromJson(uri);
+                        } catch (Exception e) {
+                            Toast.makeText(this, "Failed to import JSON", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +80,8 @@ public class EditSetActivity extends AppCompatActivity {
         btnClose.setOnClickListener(v -> finish());
         btnDone.setOnClickListener(v -> updateSetAndFlashcards());
         btnAddCard.setOnClickListener(v -> addFlashcardView(null));
+        Button btnImportJson = findViewById(R.id.btn_import_flashcards);
+        btnImportJson.setOnClickListener(v -> openFilePicker());
 
         loadSetDetails();
     }
@@ -78,6 +104,43 @@ public class EditSetActivity extends AppCompatActivity {
             });
         }).start();
     }
+
+    private void openFilePicker() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("application/json");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        filePickerLauncher.launch(Intent.createChooser(intent, "Choose a JSON file"));
+    }
+
+    private void importFlashcardsFromJson(Uri uri) throws Exception {
+        InputStream inputStream = getContentResolver().openInputStream(uri);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        StringBuilder builder = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            builder.append(line);
+        }
+        reader.close();
+
+        JSONArray jsonArray = new JSONArray(builder.toString());
+        runOnUiThread(() -> {
+//            flashcardContainer.removeAllViews();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject obj = jsonArray.optJSONObject(i);
+                if (obj != null) {
+                    String front = obj.optString("front_text", "");
+                    String back = obj.optString("back_text", "");
+                    if (!front.isEmpty() && !back.isEmpty()) {
+                        Flashcards flashcard = new Flashcards();
+                        flashcard.front_text = front;
+                        flashcard.back_text = back;
+                        addFlashcardView(flashcard);
+                    }
+                }
+            }
+        });
+    }
+
 
     private void addFlashcardView(Flashcards flashcard) {
         LayoutInflater inflater = LayoutInflater.from(this);
