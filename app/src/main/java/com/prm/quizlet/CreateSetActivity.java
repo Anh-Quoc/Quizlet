@@ -1,5 +1,7 @@
 package com.prm.quizlet;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
@@ -18,14 +22,39 @@ import com.prm.quizlet.DAO.SetDAO;
 import com.prm.quizlet.entity.Flashcards;
 import com.prm.quizlet.entity.Sets;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 public class CreateSetActivity extends AppCompatActivity {
+    private static final int REQUEST_CODE_IMPORT_JSON = 1001;
 
     private EditText etTitle, etDescription;
     private ImageView btnClose, btnDone;
     private Button btnAddCard;
     private LinearLayout flashcardContainer;
-
+    private Button btnImportFlashcards;
     private QuizletDatabase db;
+    private final ActivityResultLauncher<Intent> someActivityLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Uri uri = result.getData().getData();
+                    if (uri != null) {
+                        try {
+                            importFlashcardsFromJson(uri);
+                        } catch (IOException | JSONException e) {
+                            Toast.makeText(this, "Failed to import JSON: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,19 +71,54 @@ public class CreateSetActivity extends AppCompatActivity {
         btnDone = findViewById(R.id.btn_done);
         btnAddCard = findViewById(R.id.btn_add_card);
         flashcardContainer = findViewById(R.id.flashcard_container);
+        btnImportFlashcards = findViewById(R.id.btn_import_flashcards);
 
         // Set listeners
         btnClose.setOnClickListener(v -> finish());
         btnDone.setOnClickListener(v -> saveSetWithFlashcards());
-        btnAddCard.setOnClickListener(v -> addFlashcardView());
+        btnAddCard.setOnClickListener(v -> addFlashcardView("", ""));
+        btnImportFlashcards.setOnClickListener(v -> openJsonFilePicker());
 
         // Initial card
-        addFlashcardView();
+        addFlashcardView("", "");
     }
 
-    private void addFlashcardView() {
+    private void openJsonFilePicker() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("application/json");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        someActivityLauncher.launch(Intent.createChooser(intent, "Select JSON File"));
+    }
+
+    private void importFlashcardsFromJson(Uri uri) throws IOException, JSONException {
+        InputStream inputStream = getContentResolver().openInputStream(uri);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        StringBuilder builder = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            builder.append(line);
+        }
+        reader.close();
+
+        JSONArray jsonArray = new JSONArray(builder.toString());
+//        flashcardContainer.removeAllViews();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject obj = jsonArray.getJSONObject(i);
+            String frontText = obj.optString("front_text", "");
+            String backText = obj.optString("back_text", "");
+            addFlashcardView(frontText, backText);
+        }
+    }
+
+    private void addFlashcardView(String term, String definition) {
         LayoutInflater inflater = LayoutInflater.from(this);
         View flashcardView = inflater.inflate(R.layout.item_flashcards_create, flashcardContainer, false);
+
+        EditText etTerm = flashcardView.findViewById(R.id.et_term);
+        EditText etDefinition = flashcardView.findViewById(R.id.et_definition);
+
+        etTerm.setText(term);
+        etDefinition.setText(definition);
 
         // Handle delete button
         ImageView btnDelete = flashcardView.findViewById(R.id.btn_delete);

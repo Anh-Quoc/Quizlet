@@ -1,5 +1,7 @@
 package com.prm.quizlet;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.GestureDetector;
@@ -27,6 +29,7 @@ import com.prm.quizlet.entity.Sets;
 import java.util.List;
 
 public class SetDetailsActivity extends AppCompatActivity {
+    private AnimatorSet flipIn, flipOut;
     private List<Flashcards> flashcards;
 
     private FlashcardDetailsAdapter adapter;
@@ -119,7 +122,8 @@ public class SetDetailsActivity extends AppCompatActivity {
             });
         }).start();
 
-
+        setupAnimations();
+        flashcardText.setOnClickListener(v -> flipCard());
 
         GestureDetector gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             private static final int SWIPE_THRESHOLD = 100;
@@ -169,6 +173,13 @@ public class SetDetailsActivity extends AppCompatActivity {
         });
     }
 
+    private void setupAnimations() {
+        flipIn = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.card_flip_in);
+        flipOut = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.card_flip_out);
+        flipIn.setTarget(flashcardText);
+        flipOut.setTarget(flashcardText);
+    }
+
     private void loadSetData(int setId) {
         new Thread(() -> {
             flashcards = db.flashcardDao().getBySetId(setId);
@@ -205,11 +216,9 @@ public class SetDetailsActivity extends AppCompatActivity {
     private void flipCard() {
         if (flashcards == null || flashcards.isEmpty()) return;
         Flashcards card = flashcards.get(currentIndex);
-        if (showingFront) {
-            flashcardText.setText(card.back_text);
-        } else {
-            flashcardText.setText(card.front_text);
-        }
+        flipOut.start();
+        flashcardText.setText(showingFront ? card.back_text : card.front_text);
+        flipIn.start();
         showingFront = !showingFront;
     }
 
