@@ -38,9 +38,12 @@ import java.util.Map;
 public class LibraryActivity extends AppCompatActivity implements BottomNavFragment.OnBottomNavClickListener {
     private QuizletDatabase db;
     private LibraryAdapter adapter;
+    private FolderAdapter folderAdapter;
 
     private List<Sets> allSets = new ArrayList<>();
+    private List<Folder> allFolders = new ArrayList<>();
     private List<LibraryItem> displayList = new ArrayList<>();
+    private int currentTabPosition = 0;
 
 
     @Override
@@ -67,61 +70,47 @@ public class LibraryActivity extends AppCompatActivity implements BottomNavFragm
         // TabLayout setup (nếu muốn chuyển tab)
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText("Flashcard sets"));
-        tabLayout.addTab(tabLayout.newTab().setText("Practice tests"));
         tabLayout.addTab(tabLayout.newTab().setText("Folders"));
-        tabLayout.addTab(tabLayout.newTab().setText("Class"));
 
         EditText edtFilter = findViewById(R.id.edtFilter);
 
         new Thread(() -> {
             allSets = db.setDao().getAllOrderByCreatedAtDesc();
-            runOnUiThread(() -> updateDisplayList(""));
+            allFolders = db.folderDao().getAll();
+            runOnUiThread(() -> updateDisplaySetList("")); // mặc định tab 0
         }).start();
 
         edtFilter.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                updateDisplayList(s.toString());
+                if (currentTabPosition == 0) {
+                    updateDisplaySetList(s.toString());
+                } else if (currentTabPosition == 1) {
+                    updateDisplayFolderList(s.toString());
+                }
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
         });
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                int position = tab.getPosition();
-                if (position == 0) { // Flashcard sets
-                    updateDisplayList(edtFilter.getText().toString());
-                } else if (position == 2) { // Folders
-                    // Show folders
-                    new Thread(() -> {
-                        List<Folder> folders = db.folderDao().getAll();
-                        runOnUiThread(() -> {
-                            FolderAdapter folderAdapter = new FolderAdapter(folders, folder -> {
-                                Intent intent = new Intent(LibraryActivity.this, com.prm.quizlet.ui.folder.FolderActivity.class);
-                                intent.putExtra("folder_id", folder.id);
-                                startActivity(intent);
-                            });
-                            recyclerView.setAdapter(folderAdapter);
-                        });
-                    }).start();
-                } else {
-                    // You can add logic for other tabs here
+                currentTabPosition = tab.getPosition();
+                String filterText = edtFilter.getText().toString();
+                if (currentTabPosition == 0) { // Flashcard sets
+                    updateDisplaySetList(filterText);
+                } else if (currentTabPosition == 1) { // Folders
+                    updateDisplayFolderList(filterText);
                 }
+                // ... các tab khác nếu cần
             }
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
+            @Override public void onTabUnselected(TabLayout.Tab tab) {}
+            @Override public void onTabReselected(TabLayout.Tab tab) {}
         });
     }
 
-    private void updateDisplayList(String query) {
+    private void updateDisplaySetList(String query) {
         new Thread(() -> {
             Map<String, List<Sets>> monthMap = new LinkedHashMap<>();
             SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
@@ -160,6 +149,27 @@ public class LibraryActivity extends AppCompatActivity implements BottomNavFragm
             });
         }).start();
     }
+
+    private void updateDisplayFolderList(String query) {
+        new Thread(() -> {
+            List<Folder> filteredFolders = new ArrayList<>();
+            for (Folder folder : allFolders) {
+                if (folder.name != null && folder.name.toLowerCase().contains(query.toLowerCase())) {
+                    filteredFolders.add(folder);
+                }
+            }
+            runOnUiThread(() -> {
+                folderAdapter = new FolderAdapter(filteredFolders, folder -> {
+                    Intent intent = new Intent(LibraryActivity.this, com.prm.quizlet.ui.folder.FolderActivity.class);
+                    intent.putExtra("folder_id", folder.id);
+                    startActivity(intent);
+                });
+                RecyclerView recyclerView = findViewById(R.id.recyclerViewLibrary);
+                recyclerView.setAdapter(folderAdapter);
+            });
+        }).start();
+    }
+
     @Override
     public void onHomeClick() {
         finish();
